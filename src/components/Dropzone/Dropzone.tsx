@@ -15,7 +15,7 @@ import styles from "./Dropzone.module.css";
 import type { DropzoneProps } from "./Dropzone.types";
 
 import { Button, showToast } from "..";
-import { useUpload } from "../../../clientToServer/hooks";
+import { useUpload } from "../../clientToServer/hooks";
 
 export function Dropzone({ onJobCreated, className }: DropzoneProps) {
   const upload = useUpload();

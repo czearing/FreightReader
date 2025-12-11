@@ -2,7 +2,7 @@ import { apiClient } from "../apiClient";
 import { createUpload, registerJob } from "../mocks/mockApi";
 import type { UploadPayload } from "../types";
 
-import { getSupabaseBrowserClient } from "../../lib/supabase/client";
+import { getSupabaseBrowserClient } from "../../services/supabase/client";
 
 export async function postUpload(payload: UploadPayload) {
   if (!payload.file) {
