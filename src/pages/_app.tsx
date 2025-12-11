@@ -1,25 +1,20 @@
+import { HydrationBoundary, QueryClientProvider } from "@tanstack/react-query";
+import type { DehydratedState } from "@tanstack/react-query";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { AppProps } from "next/app";
 import Head from "next/head";
-import { QueryClientProvider, hydrate } from "@tanstack/react-query";
+
 import { queryClient } from "../clients/queryClient";
-import type { DehydratedState } from "@tanstack/react-query";
 
 const SITE_NAME = "Freight Reader";
 const DEFAULT_DESCRIPTION =
   "Freight Reader is an AI-powered tool that simplifies and summarizes complex freight documents, making it easier for logistics professionals to understand and manage their shipments.";
 
-const hydratePageProps = (pageProps: AppProps["pageProps"]) => {
-  const dehydrated = (pageProps as { dehydratedState?: DehydratedState })
-    .dehydratedState;
-  if (dehydrated) {
-    hydrate(queryClient, dehydrated);
-  }
-};
-
 export default function App(props: AppProps) {
   const { Component, pageProps } = props;
+  const dehydratedState = (pageProps as { dehydratedState?: DehydratedState })
+    .dehydratedState;
 
   return (
     <>
@@ -37,11 +32,11 @@ export default function App(props: AppProps) {
         />
       </Head>
       <QueryClientProvider client={queryClient}>
-        <AppContainer>
+        <HydrationBoundary state={dehydratedState}>
           <Component {...pageProps} />
-          <Analytics />
-          <SpeedInsights />
-        </AppContainer>
+        </HydrationBoundary>
+        <Analytics />
+        <SpeedInsights />
       </QueryClientProvider>
     </>
   );
