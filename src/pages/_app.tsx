@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { AppProps } from "next/app";
 import Head from "next/head";
+import { Toaster } from "sonner";
 
 import { queryClient } from "../clients/queryClient";
 
@@ -37,6 +38,12 @@ export default function App(props: AppProps) {
         </HydrationBoundary>
         <Analytics />
         <SpeedInsights />
+        <Toaster
+          position="top-right"
+          richColors
+          closeButton
+          toastOptions={{ duration: 4500 }}
+        />
       </QueryClientProvider>
     </>
   );
