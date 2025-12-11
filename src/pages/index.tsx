@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { ChangeEvent } from "react";
 import {
   ChevronDown,
@@ -10,6 +10,7 @@ import {
   Upload,
 } from "lucide-react";
 
+import { useHistory, useJobStatus, useUpload } from "../clientToServer/hooks";
 import {
   Button,
   Dialog,
@@ -37,26 +38,57 @@ const featureList = [
 export default function HomePage() {
   const [freightType, setFreightType] = useState("Bill of Lading");
   const [referenceId, setReferenceId] = useState("");
+  const [activeJobId, setActiveJobId] = useState<string | undefined>();
 
-  const handleToast = () =>
-    showToast({
-      title: "Upload queued",
-      description: `${freightType} ready to process${
-        referenceId ? ` for ${referenceId}` : ""
-      }.`,
-      tone: "success",
-      actionLabel: "View queue",
-      onAction: () =>
-        showToast({
-          title: "Queue opening",
-          description: "Navigation placeholder",
-          tone: "info",
-          duration: 2200,
-        }),
-    });
+  const { data: history, isLoading: historyLoading } = useHistory();
+  const upload = useUpload();
+  const jobStatus = useJobStatus(activeJobId);
+
+  useEffect(() => {
+    if (!activeJobId && history?.length) {
+      setActiveJobId(history[0].id);
+    }
+  }, [activeJobId, history]);
+
+  const jobStatusDisplay = useMemo(() => {
+    if (!jobStatus.data) {
+      return "Idle";
+    }
+    return jobStatus.data.status === "complete"
+      ? "Complete"
+      : `Processing (${jobStatus.data.progress}%)`;
+  }, [jobStatus.data]);
 
   const updateReference = (event: ChangeEvent<HTMLInputElement>) =>
     setReferenceId(event.target.value);
+
+  const queueUpload = () => {
+    upload.mutate(
+      {
+        name: `${freightType.replace(/\s+/g, "-").toLowerCase()}-${Date.now()}.pdf`,
+        sizeKB: 512 + Math.ceil(Math.random() * 300),
+      },
+      {
+        onSuccess: ({ jobId }) => {
+          setActiveJobId(jobId);
+          showToast({
+            title: "Upload queued",
+            description: `Job ${jobId} created.`,
+            tone: "success",
+          });
+        },
+        onError: (error) => {
+          const message =
+            error instanceof Error ? error.message : String(error);
+          showToast({
+            title: "Upload failed",
+            description: message,
+            tone: "error",
+          });
+        },
+      },
+    );
+  };
 
   return (
     <main
@@ -249,8 +281,9 @@ export default function HomePage() {
             <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
               <Button
                 icon={<Upload size={16} />}
-                onClick={handleToast}
+                onClick={queueUpload}
                 style={{ flex: 1, minWidth: "160px" }}
+                isLoading={upload.isPending}
               >
                 Queue upload
               </Button>
@@ -297,6 +330,108 @@ export default function HomePage() {
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
+            </div>
+
+            <div
+              style={{
+                borderTop: "1px solid rgba(255, 255, 255, 0.08)",
+                paddingTop: "1rem",
+                display: "grid",
+                gap: "0.6rem",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <h3 style={{ margin: 0, fontSize: "1rem" }}>Query data demo</h3>
+                <span
+                  style={{
+                    fontSize: "0.9rem",
+                    color: "rgba(229, 231, 235, 0.7)",
+                  }}
+                >
+                  {historyLoading ? "Loading history…" : "Cached"}
+                </span>
+              </div>
+
+              <div
+                style={{
+                  display: "grid",
+                  gap: "0.4rem",
+                  maxHeight: "180px",
+                  overflowY: "auto",
+                }}
+              >
+                {history?.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => setActiveJobId(item.id)}
+                    style={{
+                      border: "1px solid rgba(255, 255, 255, 0.08)",
+                      borderRadius: "12px",
+                      padding: "0.65rem 0.75rem",
+                      background:
+                        activeJobId === item.id
+                          ? "rgba(59, 130, 246, 0.12)"
+                          : "rgba(255, 255, 255, 0.03)",
+                      color: "#e5e7eb",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      gap: "0.7rem",
+                      cursor: "pointer",
+                      textAlign: "left",
+                    }}
+                  >
+                    <span style={{ fontWeight: 700 }}>{item.name}</span>
+                    <span
+                      style={{
+                        fontSize: "0.9rem",
+                        color:
+                          item.status === "complete"
+                            ? "#34d399"
+                            : "rgba(229, 231, 235, 0.8)",
+                      }}
+                    >
+                      {item.status}
+                    </span>
+                  </button>
+                ))}
+                {!history?.length && (
+                  <p style={{ color: "rgba(229, 231, 235, 0.7)" }}>
+                    Queue an upload to populate history.
+                  </p>
+                )}
+              </div>
+
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  padding: "0.75rem",
+                  border: "1px solid rgba(255, 255, 255, 0.08)",
+                  borderRadius: "12px",
+                  background: "rgba(255, 255, 255, 0.02)",
+                }}
+              >
+                <div>
+                  <p style={{ margin: 0, color: "rgba(229, 231, 235, 0.8)" }}>
+                    Active job
+                  </p>
+                  <strong>{activeJobId ?? "None"}</strong>
+                </div>
+                <div style={{ textAlign: "right" }}>
+                  <p style={{ margin: 0, color: "rgba(229, 231, 235, 0.8)" }}>
+                    Status
+                  </p>
+                  <strong>{jobStatusDisplay}</strong>
+                </div>
+              </div>
             </div>
           </div>
         </div>
