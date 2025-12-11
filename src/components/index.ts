@@ -33,3 +33,6 @@ export type {
 
 export { showToast, dismissToast } from "./Toast/Toast";
 export type { ToastOptions, ToastTone } from "./Toast/Toast.types";
+
+export { Dropzone } from "./Dropzone/Dropzone";
+export type { DropzoneProps } from "./Dropzone/Dropzone.types";

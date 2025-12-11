@@ -1,0 +1,78 @@
+.dropzone {
+  border: 1px dashed rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: grid;
+  gap: 0.6rem;
+  cursor: pointer;
+}
+
+.dropzone[data-drag-active="true"] {
+  border-color: rgba(59, 130, 246, 0.45);
+  background: rgba(59, 130, 246, 0.08);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.iconWrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(59, 130, 246, 0.18);
+  border: 1px solid rgba(59, 130, 246, 0.35);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #60a5fa;
+}
+
+.iconWrap[data-state="done"] {
+  background: rgba(52, 211, 153, 0.18);
+  border-color: rgba(52, 211, 153, 0.35);
+  color: #34d399;
+}
+
+.iconWrap[data-state="uploading"] {
+  background: rgba(59, 130, 246, 0.22);
+}
+
+.spinner {
+  animation: spin 0.9s linear infinite;
+}
+
+.copy {
+  flex: 1;
+}
+
+.headline {
+  margin: 0;
+  color: #e5e7eb;
+  font-weight: 700;
+}
+
+.subline {
+  margin: 0;
+  color: rgba(229, 231, 235, 0.75);
+}
+
+.fileTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(229, 231, 235, 0.9);
+  font-size: 0.95rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

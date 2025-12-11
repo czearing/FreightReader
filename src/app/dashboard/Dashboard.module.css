@@ -1,0 +1,156 @@
+.page {
+  min-height: 100vh;
+  padding: 2.5rem 1.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  gap: 1.5rem;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.headerMeta {
+  margin: 0;
+  color: rgba(229, 231, 235, 0.7);
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.95rem;
+}
+
+.title {
+  margin: 0.25rem 0 0;
+  font-size: 1.9rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1rem;
+}
+
+.card {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 1.4rem;
+  background: rgba(255, 255, 255, 0.02);
+  display: grid;
+  gap: 1rem;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pill {
+  color: #34d399;
+  background: rgba(52, 211, 153, 0.12);
+  border: 1px solid rgba(52, 211, 153, 0.3);
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.statusCard {
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+  background: rgba(255, 255, 255, 0.02);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.statusTextPrimary {
+  margin: 0;
+  color: #e5e7eb;
+  font-weight: 700;
+}
+
+.statusTextSecondary {
+  margin: 0;
+  color: rgba(229, 231, 235, 0.7);
+}
+
+.historyList {
+  display: grid;
+  gap: 0.6rem;
+  max-height: 440px;
+  overflow-y: auto;
+}
+
+.historyItem {
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+  padding: 0.8rem 0.9rem;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.4rem;
+  color: #e5e7eb;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 120ms ease, border-color 150ms ease,
+    background 150ms ease;
+}
+
+.historyItem:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.historyItemActive {
+  background: rgba(59, 130, 246, 0.14);
+  border-color: rgba(59, 130, 246, 0.25);
+}
+
+.historyMeta {
+  display: grid;
+  gap: 0.1rem;
+}
+
+.historyName {
+  font-weight: 800;
+  margin: 0;
+}
+
+.historyDate {
+  color: rgba(229, 231, 235, 0.75);
+  margin: 0;
+}
+
+.statusBadge {
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-weight: 700;
+}
+
+.statusBadgeComplete {
+  background: rgba(52, 211, 153, 0.12);
+  color: #34d399;
+}
+
+.statusBadgeProcessing {
+  background: rgba(59, 130, 246, 0.12);
+  color: #93c5fd;
+}
+
+.emptyState {
+  color: rgba(229, 231, 235, 0.75);
+}
+
+@media (max-width: 960px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

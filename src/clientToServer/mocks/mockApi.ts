@@ -1,8 +1,4 @@
-import type {
-  HistoryItem,
-  JobStatus,
-  UploadPayload,
-} from "../types";
+import type { HistoryItem, JobStatus, UploadPayload } from "../types";
 
 const mockHistory: HistoryItem[] = [
   {
@@ -43,6 +39,38 @@ const makeId = () =>
     ? crypto.randomUUID()
     : Math.random().toString(36).slice(2);
 
+export function registerJob({
+  jobId,
+  name,
+  sizeKB,
+  status = "queued",
+  progress = 0,
+  uploadedAt = new Date().toISOString(),
+}: {
+  jobId: string;
+  name: string;
+  sizeKB?: number;
+  status?: HistoryItem["status"];
+  progress?: number;
+  uploadedAt?: string;
+}) {
+  const historyItem: HistoryItem = {
+    id: jobId,
+    name: name || "unnamed-upload.pdf",
+    status,
+    uploadedAt,
+    sizeKB: sizeKB ?? 512,
+  };
+
+  mockHistory.unshift(historyItem);
+  jobStatuses[jobId] = {
+    jobId,
+    status,
+    progress,
+    updatedAt: uploadedAt,
+  };
+}
+
 export async function fetchHistory(): Promise<HistoryItem[]> {
   await sleep(220);
   return mockHistory.map((item) => ({ ...item }));
@@ -77,21 +105,14 @@ export async function createUpload(
   const jobId = `job-${makeId()}`;
   const uploadedAt = new Date().toISOString();
 
-  const historyItem: HistoryItem = {
-    id: jobId,
-    name: payload.name || "unnamed-upload.pdf",
-    status: "queued",
-    uploadedAt,
-    sizeKB: payload.sizeKB ?? 512,
-  };
-
-  mockHistory.unshift(historyItem);
-  jobStatuses[jobId] = {
+  registerJob({
     jobId,
+    name: payload.name,
+    sizeKB: payload.sizeKB,
     status: "queued",
     progress: 0,
-    updatedAt: uploadedAt,
-  };
+    uploadedAt,
+  });
 
   return { jobId };
 }

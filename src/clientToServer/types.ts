@@ -11,6 +11,7 @@ export interface HistoryItem {
 export interface UploadPayload {
   name: string;
   sizeKB?: number;
+  file?: File | Blob;
 }
 
 export interface JobStatus {
