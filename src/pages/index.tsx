@@ -26,7 +26,7 @@ import {
   DropdownTrigger,
   Input,
   showToast,
-} from "../components/ui";
+} from "../components";
 
 const featureList = [
   "Upload freight PDFs (BOLs, PODs, rate cons)",
@@ -86,7 +86,7 @@ export default function HomePage() {
             tone: "error",
           });
         },
-      },
+      }
     );
   };
 
@@ -100,7 +100,8 @@ export default function HomePage() {
         background:
           "radial-gradient(circle at 20% 20%, #111827, #0b1224 45%, #060a16 100%)",
         color: "#e5e7eb",
-        fontFamily: "Inter, 'IBM Plex Sans', system-ui, -apple-system, sans-serif",
+        fontFamily:
+          "Inter, 'IBM Plex Sans', system-ui, -apple-system, sans-serif",
         padding: "3rem 1.5rem",
       }}
     >

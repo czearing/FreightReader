@@ -2,8 +2,8 @@
 
 import { Download, ListChecks } from "lucide-react";
 
-import { Button, showToast } from "@/components/ui";
-import { Dropzone } from "@/components/ui/Dropzone/Dropzone";
+import { Button, showToast } from "@/components";
+import { Dropzone } from "@/components/Dropzone/Dropzone";
 import { HistoryList } from "./components/HistoryList";
 import { StatusCard } from "./components/StatusCard";
 import styles from "./Dashboard.module.css";

@@ -2,7 +2,7 @@
 
 import { CheckCircle2, Clock3 } from "lucide-react";
 
-import { Button } from "@/components/ui";
+import { Button } from "@/components";
 import styles from "../Dashboard.module.css";
 
 interface StatusCardProps {
