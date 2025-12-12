@@ -21,11 +21,6 @@ export default function AuthCallbackPage() {
         }
         if (data.session) {
           setStatus("done");
-          showToast({
-            title: "Signed in",
-            description: "You’re now signed in.",
-            tone: "success",
-          });
           router.replace("/");
           return;
         }
@@ -58,11 +53,6 @@ export default function AuthCallbackPage() {
               throw setError;
             }
             setStatus("done");
-            showToast({
-              title: "Signed in",
-              description: "You’re now signed in.",
-              tone: "success",
-            });
             return;
           } else if (hashCode) {
             const { error } = await supabase.auth.exchangeCodeForSession(
@@ -72,11 +62,6 @@ export default function AuthCallbackPage() {
               throw error;
             }
             setStatus("done");
-            showToast({
-              title: "Signed in",
-              description: "You’re now signed in.",
-              tone: "success",
-            });
             router.replace("/");
             return;
           }
@@ -92,11 +77,6 @@ export default function AuthCallbackPage() {
           throw error;
         }
         setStatus("done");
-        showToast({
-          title: "Signed in",
-          description: "You’re now signed in.",
-          tone: "success",
-        });
         router.replace("/");
       } catch (error) {
         console.error("Auth callback error", error);
