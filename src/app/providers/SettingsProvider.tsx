@@ -45,33 +45,43 @@ const loadSettings = (fallback?: UserSettings): UserSettings => {
   }
 };
 
-const persistSettings = async (userId: string, next: UserSettings) => {
+const persistSettings = async (
+  userId: string,
+  next: UserSettings,
+  notify = true,
+) => {
   try {
     const { error } = await saveUserSettings(userId, next);
     if (error) {
       console.error("Save settings error", error);
-      showToast({
-        title: "Settings not saved",
-        description: error.message ?? "We couldn’t save your preferences.",
-        tone: "error",
-      });
+      if (notify) {
+        showToast({
+          title: "Settings not saved",
+          description: error.message ?? "We couldn’t save your preferences.",
+          tone: "error",
+        });
+      }
       return;
     }
-    showToast({
-      title: "Settings saved",
-      description: "Your preferences are up to date.",
-      tone: "success",
-    });
+    if (notify) {
+      showToast({
+        title: "Settings saved",
+        description: "Your preferences are up to date.",
+        tone: "success",
+      });
+    }
   } catch (err) {
     console.error("Save settings error", err);
-    showToast({
-      title: "Settings not saved",
-      description:
-        err instanceof Error
-          ? err.message
-          : "We couldn’t save your preferences. Try again.",
-      tone: "error",
-    });
+    if (notify) {
+      showToast({
+        title: "Settings not saved",
+        description:
+          err instanceof Error
+            ? err.message
+            : "We couldn’t save your preferences. Try again.",
+        tone: "error",
+      });
+    }
   }
 };
 
@@ -112,7 +122,7 @@ export function SettingsProvider({
       return;
     }
     hasSyncedRemote.current = true;
-    void persistSettings(userId, settings);
+    void persistSettings(userId, settings, false);
   }, [initialSettings, settings, userId]);
 
   const updateSettings = (next: UserSettings) => {
