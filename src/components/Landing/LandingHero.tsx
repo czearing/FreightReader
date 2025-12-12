@@ -1,7 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
-import styles from "@/app/LandingPage.module.css";
+import styles from "@/app/marketing/LandingPage.module.css";
 
 export const LandingHero = () => (
   <section className={styles.Landing_hero}>

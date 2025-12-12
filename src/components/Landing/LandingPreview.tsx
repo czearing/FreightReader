@@ -1,6 +1,6 @@
 import { CheckCircle, FileText, MoreHorizontal, UploadCloud } from "lucide-react";
 
-import styles from "@/app/LandingPage.module.css";
+import styles from "@/app/marketing/LandingPage.module.css";
 import type { PreviewRow } from "./Landing.types";
 
 interface LandingPreviewProps {

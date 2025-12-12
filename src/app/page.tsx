@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 
 import { getSupabaseServerClient } from "@/services/supabase/server";
-import { LandingPage } from "./LandingPage";
+import { LandingPage } from "./marketing/LandingPage";
 
 export default async function HomePage() {
   const supabase = await getSupabaseServerClient();

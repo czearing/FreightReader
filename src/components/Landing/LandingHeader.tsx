@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { FreightReaderLogo } from "@/components/FreightReaderLogo/FreightReaderLogo";
-import styles from "@/app/LandingPage.module.css";
+import styles from "@/app/marketing/LandingPage.module.css";
 
 export const LandingHeader = () => (
   <header className={styles.Landing_header}>

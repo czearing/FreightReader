@@ -1,4 +1,4 @@
-import styles from "@/app/LandingPage.module.css";
+import styles from "@/app/marketing/LandingPage.module.css";
 import type { Feature } from "./Landing.types";
 
 interface LandingFeatureGridProps {

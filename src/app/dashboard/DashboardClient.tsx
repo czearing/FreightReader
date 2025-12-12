@@ -3,11 +3,11 @@
 import { HistoryPanel, Navbar, UploadPanel } from "@/components";
 import type { UserProfile } from "@/types/freight";
 import { getSupabaseBrowserClient } from "@/services/supabase/client";
-import { useDocuments } from "./hooks/useDocuments";
-import { useThemePreference } from "./hooks/useThemePreference";
-import styles from "./page.module.css";
-import { useSettings } from "./providers/SettingsProvider";
 import { useRouter } from "next/navigation";
+import { useDocuments } from "../hooks/useDocuments";
+import { useThemePreference } from "../hooks/useThemePreference";
+import styles from "./page.module.css";
+import { useSettings } from "../providers/SettingsProvider";
 
 interface DashboardClientProps {
   user: UserProfile;
