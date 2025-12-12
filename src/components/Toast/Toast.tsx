@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import cx from "clsx";
 import {
   AlertCircle,
@@ -10,7 +11,7 @@ import { toast } from "sonner";
 import styles from "./Toast.module.css";
 import type { ToastOptions, ToastTone } from "./Toast.types";
 
-const icons: Record<ToastTone, JSX.Element> = {
+const icons: Record<ToastTone, ReactElement> = {
   info: <Info size={18} />,
   success: <CheckCircle2 size={18} />,
   warning: <TriangleAlert size={18} />,
