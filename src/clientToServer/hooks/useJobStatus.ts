@@ -1,9 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { getJobStatus } from "../queries/jobStatus";
+import type { JobStatus } from "../types";
 
 export function useJobStatus(jobId?: string | null) {
-  return useQuery({
+  return useQuery<JobStatus, Error>({
     queryKey: ["jobStatus", jobId],
     queryFn: () => {
       if (!jobId) {
@@ -12,7 +13,9 @@ export function useJobStatus(jobId?: string | null) {
       return getJobStatus(jobId);
     },
     enabled: Boolean(jobId),
-    refetchInterval: (data) =>
-      data?.status === "done" || data?.status === "failed" ? false : 1500,
+    refetchInterval: (query) => {
+      const status = query.state.data?.status;
+      return status === "done" || status === "failed" ? false : 1500;
+    },
   });
 }

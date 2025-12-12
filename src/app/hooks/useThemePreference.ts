@@ -4,26 +4,31 @@ import type { ThemePreference } from "@/types/freight";
 
 type ThemeMode = "light" | "dark";
 
+const resolveTheme = (preference: ThemePreference): ThemeMode => {
+  if (preference === "system") {
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
+  }
+  return preference;
+};
+
 export const useThemePreference = (theme: ThemePreference) => {
   useEffect(() => {
     const root = document.documentElement;
+    const apply = (value: ThemeMode) => root.setAttribute("data-theme", value);
 
-    const applyTheme = (value: ThemeMode) => {
-      root.setAttribute("data-theme", value);
-    };
+    const next = resolveTheme(theme);
+    apply(next);
 
-    if (theme === "system") {
-      const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-      applyTheme(mediaQuery.matches ? "dark" : "light");
-
-      const listener = (event: MediaQueryListEvent) => {
-        applyTheme(event.matches ? "dark" : "light");
-      };
-
-      mediaQuery.addEventListener("change", listener);
-      return () => mediaQuery.removeEventListener("change", listener);
+    if (theme !== "system") {
+      return;
     }
 
-    applyTheme(theme);
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    const listener = (event: MediaQueryListEvent) =>
+      apply(event.matches ? "dark" : "light");
+    mediaQuery.addEventListener("change", listener);
+    return () => mediaQuery.removeEventListener("change", listener);
   }, [theme]);
 };

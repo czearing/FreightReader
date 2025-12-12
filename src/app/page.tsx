@@ -95,6 +95,7 @@ export default function Page() {
             onDelete={remove}
             onDownload={download}
             onDownloadAll={downloadAll}
+            defaultExportFormat={userSettings.defaultExportFormat}
           />
         </div>
       </main>

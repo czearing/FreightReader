@@ -27,12 +27,14 @@ export const HistoryPanel = ({
   onDelete,
   onDownload,
   onDownloadAll,
+  defaultExportFormat = "CSV",
 }: HistoryPanelProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedDoc, setSelectedDoc] = useState<
     HistoryPanelProps["documents"][number] | null
   >(null);
   const [showDownloadMenu, setShowDownloadMenu] = useState(false);
+  const mainExportFormat = defaultExportFormat;
 
   const normalizedQuery = searchQuery.toLowerCase().trim();
   const filteredDocs = useMemo(() => {
@@ -142,10 +144,10 @@ export const HistoryPanel = ({
               <button
                 type="button"
                 disabled={completedDocsCount === 0}
-                onClick={() => onDownloadAll("CSV")}
+                onClick={() => onDownloadAll(mainExportFormat)}
                 className={styles.HistoryPanel_mainExportBtn}
               >
-                Export CSV
+                Export {mainExportFormat === "QBOOKS" ? "QuickBooks" : mainExportFormat}
               </button>
               <button
                 type="button"

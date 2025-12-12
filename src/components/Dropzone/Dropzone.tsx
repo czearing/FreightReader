@@ -22,7 +22,9 @@ export function Dropzone({ onFilesSelected, className, isBusy }: DropzoneProps) 
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
-      if (!acceptedFiles.length) return;
+      if (!acceptedFiles.length) {
+        return;
+      }
       setRecentFiles(acceptedFiles.slice(0, 3).map((file) => file.name));
       setStatus("uploading");
       onFilesSelected?.(acceptedFiles);
@@ -66,7 +68,7 @@ export function Dropzone({ onFilesSelected, className, isBusy }: DropzoneProps) 
     },
   });
 
-  const isLoading = isBusy || status === "uploading";
+  const isLoading = isBusy ? true : status === "uploading";
 
   return (
     <div

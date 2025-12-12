@@ -1,7 +1,9 @@
+/* eslint-disable react/no-danger */
 import type { Metadata } from "next";
 
 import { Providers } from "./providers";
 import "./global.css";
+import { themeInitScript } from "./themeScript";
 
 export const metadata: Metadata = {
   title: "Freight Reader Dashboard",
@@ -23,6 +25,11 @@ export default function RootLayout({
           fontFamily: "Inter, system-ui, -apple-system, Segoe UI, sans-serif",
         }}
       >
+        {/* Preload theme to avoid flash */}
+        <script
+          dangerouslySetInnerHTML={{ __html: themeInitScript }}
+          suppressHydrationWarning
+        />
         <Providers>{children}</Providers>
       </body>
     </html>

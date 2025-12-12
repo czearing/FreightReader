@@ -6,4 +6,5 @@ export interface HistoryPanelProps {
   onDelete: (id: string) => void;
   onDownload: (id: string, format: ExportFormat) => void;
   onDownloadAll: (format: ExportFormat) => void;
+  defaultExportFormat?: ExportFormat;
 }
