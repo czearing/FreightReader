@@ -7,6 +7,7 @@ import styles from "./Navbar.module.css";
 import type { NavbarProps } from "./Navbar.types";
 import { AccountDialog } from "../AccountDialog/AccountDialog";
 import { BillingDialog } from "../BillingDialog/BillingDialog";
+import { FreightReaderLogo } from "../FreightReaderLogo/FreightReaderLogo";
 import { PreferencesDialog } from "../PreferencesDialog/PreferencesDialog";
 
 const getInitials = (name: string) =>
@@ -23,15 +24,17 @@ export const Navbar = ({
   settings,
   updateSettings,
   onUpdateProfile,
+  onSignOut,
 }: NavbarProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isPreferencesOpen, setIsPreferencesOpen] = useState(false);
   const [isAccountOpen, setIsAccountOpen] = useState(false);
   const [isBillingOpen, setIsBillingOpen] = useState(false);
+  const [isLogoHover, setIsLogoHover] = useState(false);
 
   const remainingDocs = useMemo(
     () => Math.max(0, stats.limit - stats.used),
-    [stats.limit, stats.used],
+    [stats.limit, stats.used]
   );
 
   const toggleMenu = () => setIsMenuOpen((open) => !open);
@@ -55,17 +58,24 @@ export const Navbar = ({
   const avatarFallback = getInitials(user.name);
   const usageCountClassName = cx(
     styles.Navbar_usageCount,
-    stats.used >= stats.limit && styles.Navbar_usageCountWarning,
+    stats.used >= stats.limit && styles.Navbar_usageCountWarning
   );
   const avatarTriggerClassName = cx(
     styles.Navbar_avatarTrigger,
-    isMenuOpen && styles.Navbar_avatarTriggerActive,
+    isMenuOpen && styles.Navbar_avatarTriggerActive
   );
 
   return (
     <>
       <nav className={styles.Navbar_nav}>
         <div className={styles.Navbar_logoArea}>
+          <FreightReaderLogo
+            className={styles.Navbar_logoMark}
+            variant="duotone"
+            color="var(--brand-solid)"
+            onMouseEnter={() => setIsLogoHover(true)}
+            onMouseLeave={() => setIsLogoHover(false)}
+          />
           <span className={styles.Navbar_logoText}>FreightReader.io</span>
         </div>
 
@@ -166,8 +176,12 @@ export const Navbar = ({
                     type="button"
                     className={cx(
                       styles.Navbar_menuItem,
-                      styles.Navbar_menuItemDanger,
+                      styles.Navbar_menuItemDanger
                     )}
+                    onClick={() => {
+                      closeMenu();
+                      onSignOut();
+                    }}
                   >
                     <LogOut
                       size={16}

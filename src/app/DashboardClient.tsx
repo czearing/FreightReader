@@ -2,10 +2,12 @@
 
 import { HistoryPanel, Navbar, UploadPanel } from "@/components";
 import type { UserProfile } from "@/types/freight";
+import { getSupabaseBrowserClient } from "@/services/supabase/client";
 import { useDocuments } from "./hooks/useDocuments";
 import { useThemePreference } from "./hooks/useThemePreference";
 import styles from "./page.module.css";
 import { useSettings } from "./providers/SettingsProvider";
+import { useRouter } from "next/navigation";
 
 interface DashboardClientProps {
   user: UserProfile;
@@ -13,6 +15,7 @@ interface DashboardClientProps {
 
 export function DashboardClient({ user }: DashboardClientProps) {
   const planLimit = 50;
+  const router = useRouter();
   const { settings: userSettings, updateSettings: setUserSettings } =
     useSettings();
 
@@ -30,6 +33,13 @@ export function DashboardClient({ user }: DashboardClientProps) {
     downloadAll,
   } = useDocuments(planLimit, userSettings.autoPin);
 
+  const handleSignOut = async () => {
+    const supabase = getSupabaseBrowserClient();
+    await supabase.auth.signOut();
+    router.replace("/auth");
+    router.refresh();
+  };
+
   return (
     <div className={styles.App_container}>
       <Navbar
@@ -38,6 +48,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
         settings={userSettings}
         updateSettings={setUserSettings}
         onUpdateProfile={() => {}}
+        onSignOut={handleSignOut}
       />
 
       <main className={styles.App_main}>

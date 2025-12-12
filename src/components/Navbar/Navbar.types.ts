@@ -6,4 +6,5 @@ export interface NavbarProps {
   settings: UserSettings;
   updateSettings: (settings: UserSettings) => void;
   onUpdateProfile: (user: UserProfile) => void;
+  onSignOut: () => void;
 }

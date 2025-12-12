@@ -24,6 +24,17 @@
   gap: 8px;
 }
 
+.Navbar_logoMark {
+  width: 32px;
+  height: 32px;
+  color: var(--brand-solid);
+  transition: transform 0.2s ease;
+}
+
+.Navbar_logoMark:hover {
+  transform: scale(1.05);
+}
+
 .Navbar_logoText {
   font-size: 1.25rem;
   font-weight: 700;

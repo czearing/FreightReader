@@ -57,3 +57,9 @@ export type { HistoryPanelProps } from "./HistoryPanel/HistoryPanel.types";
 
 export { UploadPanel } from "./UploadPanel/UploadPanel";
 export type { UploadPanelProps } from "./UploadPanel/UploadPanel.types";
+
+export { FreightReaderLogo } from "./FreightReaderLogo/FreightReaderLogo";
+export type {
+  FreightReaderLogoProps,
+  FreightReaderLogoVariant,
+} from "./FreightReaderLogo/FreightReaderLogo.types";
