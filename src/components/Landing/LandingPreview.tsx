@@ -1,5 +1,3 @@
-"use client";
-
 import { CheckCircle, FileText, MoreHorizontal, UploadCloud } from "lucide-react";
 
 import styles from "@/app/LandingPage.module.css";

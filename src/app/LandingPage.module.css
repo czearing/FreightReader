@@ -95,6 +95,7 @@
   border-radius: 9999px;
   box-shadow: var(--shadow-lg);
   transition: all 0.2s;
+  text-decoration: none;
 }
 
 .Landing_ctaBtn:hover {

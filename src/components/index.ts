@@ -63,9 +63,3 @@ export type {
   FreightReaderLogoProps,
   FreightReaderLogoVariant,
 } from "./FreightReaderLogo/FreightReaderLogo.types";
-
-export { LandingHeader } from "./Landing/LandingHeader";
-export { LandingHero } from "./Landing/LandingHero";
-export { LandingPreview } from "./Landing/LandingPreview";
-export { LandingFeatureGrid } from "./Landing/LandingFeatureGrid";
-export { LandingFooter } from "./Landing/LandingFooter";

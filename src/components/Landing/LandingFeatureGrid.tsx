@@ -1,5 +1,3 @@
-"use client";
-
 import styles from "@/app/LandingPage.module.css";
 import type { Feature } from "./Landing.types";
 

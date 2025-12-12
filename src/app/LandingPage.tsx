@@ -1,14 +1,10 @@
-"use client";
-
 import { Download, Shield, Zap } from "lucide-react";
 
-import {
-  LandingFeatureGrid,
-  LandingFooter,
-  LandingHeader,
-  LandingHero,
-  LandingPreview,
-} from "@/components";
+import { LandingFeatureGrid } from "@/components/Landing/LandingFeatureGrid";
+import { LandingFooter } from "@/components/Landing/LandingFooter";
+import { LandingHeader } from "@/components/Landing/LandingHeader";
+import { LandingHero } from "@/components/Landing/LandingHero";
+import { LandingPreview } from "@/components/Landing/LandingPreview";
 import type { Feature, PreviewRow } from "@/components/Landing/Landing.types";
 import styles from "./LandingPage.module.css";
 
