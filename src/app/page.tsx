@@ -3,8 +3,6 @@ import { redirect } from "next/navigation";
 import { getSupabaseServerClient } from "@/services/supabase/server";
 import { LandingPage } from "./LandingPage";
 
-export const dynamic = "force-dynamic";
-
 export default async function HomePage() {
   const supabase = await getSupabaseServerClient();
   const {

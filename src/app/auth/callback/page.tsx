@@ -1,12 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { showToast } from "@/components";
 import { getSupabaseBrowserClient } from "@/services/supabase/client";
 
 export default function AuthCallbackPage() {
+  return (
+    <Suspense fallback={<CallbackFallback />}>
+      <AuthCallbackInner />
+    </Suspense>
+  );
+}
+
+function AuthCallbackInner() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [status, setStatus] = useState<"pending" | "done" | "error">("pending");
@@ -30,7 +38,6 @@ export default function AuthCallbackPage() {
           throw new Error(errorDescription);
         }
 
-        // Handle OAuth tokens returned in the URL hash (e.g., Google)
         if (typeof window !== "undefined") {
           const hashParams = new URLSearchParams(
             window.location.hash.replace(/^#/, ""),
@@ -53,6 +60,7 @@ export default function AuthCallbackPage() {
               throw setError;
             }
             setStatus("done");
+            router.replace("/");
             return;
           } else if (hashCode) {
             const { error } = await supabase.auth.exchangeCodeForSession(
@@ -95,6 +103,14 @@ export default function AuthCallbackPage() {
     void exchange();
   }, [router, searchParams]);
 
+  return <CallbackFallback status={status} />;
+}
+
+function CallbackFallback({
+  status = "pending",
+}: {
+  status?: "pending" | "done" | "error";
+}) {
   return (
     <div
       style={{
