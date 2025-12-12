@@ -22,11 +22,10 @@ export async function getSupabaseServerClient(): Promise<SupabaseServerClient> {
         return cookieStore.get(name)?.value;
       },
       set(name, value, options) {
-        // In RSC cookies can be readonly; swallow if so.
         try {
           cookieStore.set({ name, value, ...options });
         } catch {
-          // no-op
+          // noop in read-only context
         }
       },
       remove(name, options) {
@@ -38,7 +37,7 @@ export async function getSupabaseServerClient(): Promise<SupabaseServerClient> {
             ...options,
           });
         } catch {
-          // no-op
+          // noop in read-only context
         }
       },
     },

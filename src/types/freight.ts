@@ -43,3 +43,17 @@ export interface UserSettings {
   defaultExportFormat: ExportFormat;
   autoPin: boolean;
 }
+
+export interface UserSettingsRecord {
+  user_id: string;
+  theme: ThemePreference;
+  default_export_format: ExportFormat;
+  auto_pin: boolean;
+}
+
+export interface UserSettingsRecord {
+  user_id: string;
+  theme: ThemePreference;
+  default_export_format: ExportFormat;
+  auto_pin: boolean;
+}

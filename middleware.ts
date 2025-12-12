@@ -2,9 +2,6 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 
-const PUBLIC_ROUTES = ["/", "/auth", "/auth/callback"];
-const DASHBOARD_ROUTE = "/dashboard";
-
 export async function middleware(request: NextRequest) {
   const response = NextResponse.next();
 
@@ -17,12 +14,11 @@ export async function middleware(request: NextRequest) {
 
   const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
     cookies: {
-      get: (name) => request.cookies.get(name)?.value,
-      set: (name, value, options) => {
-        response.cookies.set(name, value, options);
+      getAll() {
+        return request.cookies.getAll();
       },
-      remove: (name, options) => {
-        response.cookies.set(name, "", { ...options, expires: new Date(0) });
+      setAll(cookies) {
+        cookies.forEach((cookie) => response.cookies.set(cookie));
       },
     },
   });
@@ -32,12 +28,7 @@ export async function middleware(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const path = request.nextUrl.pathname;
-  const isPublic = PUBLIC_ROUTES.some(
-    (route) => path === route || path.startsWith(`${route}/`),
-  );
-  const isDashboard = path.startsWith(DASHBOARD_ROUTE);
-
-  if (!user && isDashboard) {
+  if (!user && path.startsWith("/dashboard")) {
     const url = request.nextUrl.clone();
     url.pathname = "/auth";
     return NextResponse.redirect(url);
@@ -45,7 +36,7 @@ export async function middleware(request: NextRequest) {
 
   if (user && (path === "/" || path === "/auth" || path === "/auth/")) {
     const url = request.nextUrl.clone();
-    url.pathname = DASHBOARD_ROUTE;
+    url.pathname = "/dashboard";
     return NextResponse.redirect(url);
   }
 
@@ -53,5 +44,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\..*).*)"],
+  matcher: ["/", "/auth/:path*", "/dashboard/:path*"],
 };
