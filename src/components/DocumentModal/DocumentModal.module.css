@@ -1,0 +1,297 @@
+.DocumentModal_backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.DocumentModal_overlay {
+  position: absolute;
+  inset: 0;
+  background-color: var(--bg-backdrop);
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.2s ease-out;
+}
+
+.DocumentModal_modal {
+  position: relative;
+  background-color: var(--bg-surface);
+  border-radius: 12px;
+  box-shadow: var(--shadow-modal);
+  max-width: 42rem;
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: zoomIn 0.2s ease-out;
+  border: 1px solid var(--border-default);
+}
+
+.DocumentModal_header {
+  padding: 20px;
+  border-bottom: 1px solid var(--border-default);
+  background-color: var(--bg-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.DocumentModal_headerContent {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.DocumentModal_iconBox {
+  width: 40px;
+  height: 40px;
+  background-color: var(--bg-surface);
+  border-radius: 8px;
+  border: 1px solid var(--border-default);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--brand-solid);
+}
+
+.DocumentModal_fileName {
+  font-weight: 700;
+  color: var(--text-primary);
+  font-size: 1.125rem;
+  line-height: 1.25;
+  margin: 0;
+}
+
+.DocumentModal_fileMeta {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.DocumentModal_closeBtn {
+  padding: 8px;
+  border-radius: 9999px;
+  color: var(--text-secondary);
+  transition: background-color 0.2s;
+}
+
+.DocumentModal_closeBtn:hover {
+  background-color: var(--bg-surface-hover);
+  color: var(--text-primary);
+}
+
+.DocumentModal_body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+}
+
+.DocumentModal_previewContainer {
+  margin-bottom: 24px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border-default);
+  background-color: var(--bg-subtle);
+  height: 192px;
+  position: relative;
+}
+
+.DocumentModal_previewImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.8;
+}
+
+.DocumentModal_previewOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.DocumentModal_previewLabel {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  background-color: var(--bg-surface);
+  padding: 4px 12px;
+  border-radius: 4px;
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border-default);
+}
+
+.DocumentModal_loadingState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 0;
+  text-align: center;
+  gap: 8px;
+}
+
+.DocumentModal_spinner {
+  width: 32px;
+  height: 32px;
+  border: 2px solid var(--border-default);
+  border-bottom-color: var(--brand-solid);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 8px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.DocumentModal_failedState {
+  background-color: var(--status-error-bg);
+  border: 1px solid var(--status-error-border);
+  border-radius: 8px;
+  padding: 16px;
+  color: var(--status-error-text);
+  font-size: 0.875rem;
+}
+
+.DocumentModal_grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .DocumentModal_grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.DocumentModal_fullWidth {
+  grid-column: 1 / -1;
+}
+
+.DocumentModal_fieldBox {
+  padding: 16px;
+  border-radius: 8px;
+  background-color: var(--bg-subtle);
+  border: 1px solid var(--border-subtle);
+}
+
+.DocumentModal_fieldLabel {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.DocumentModal_fieldValue {
+  color: var(--text-primary);
+  font-weight: 500;
+  margin: 0;
+}
+
+.DocumentModal_footer {
+  padding: 20px;
+  border-top: 1px solid var(--border-default);
+  background-color: var(--bg-subtle);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.DocumentModal_deleteBtn {
+  color: var(--status-error-text);
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+
+.DocumentModal_deleteBtn:hover {
+  color: var(--status-error-text);
+  background-color: var(--status-error-bg);
+}
+
+.DocumentModal_footerActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.DocumentModal_rawBtn {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 8px 12px;
+}
+
+.DocumentModal_rawBtn:hover {
+  color: var(--text-primary);
+}
+
+.DocumentModal_downloadBtn {
+  background-color: var(--brand-solid);
+  color: var(--text-inverse);
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+  box-shadow: var(--shadow-sm);
+}
+
+.DocumentModal_downloadBtn:hover {
+  background-color: var(--brand-solid-hover);
+}
+
+.DocumentModal_loadingTitle {
+  color: var(--text-primary);
+  font-weight: 600;
+  margin: 0;
+}
+
+.DocumentModal_loadingSubtitle {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.DocumentModal_failedTitle {
+  font-weight: 700;
+  margin: 0 0 4px 0;
+}
+
+.DocumentModal_mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.DocumentModal_iconSmall {
+  width: 16px;
+  height: 16px;
+}
+
+.DocumentModal_iconTiny {
+  width: 12px;
+  height: 12px;
+}

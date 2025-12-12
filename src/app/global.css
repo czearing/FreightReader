@@ -1,0 +1,211 @@
+:root {
+  /* --- Primitive Colors (Palette) --- */
+  --p-gray-0: #ffffff;
+  --p-gray-50: #f8fafc;
+  --p-gray-100: #f1f5f9;
+  --p-gray-200: #e2e8f0;
+  --p-gray-300: #cbd5e1;
+  --p-gray-400: #94a3b8;
+  --p-gray-500: #64748b;
+  --p-gray-600: #475569;
+  --p-gray-700: #334155;
+  --p-gray-800: #1e293b;
+  --p-gray-900: #0f172a;
+  --p-gray-950: #020617;
+
+  --p-blue-50: #eff6ff;
+  --p-blue-100: #dbeafe;
+  --p-blue-500: #3b82f6;
+  --p-blue-600: #2563eb;
+  --p-blue-700: #1d4ed8;
+
+  --p-red-50: #fef2f2;
+  --p-red-100: #fee2e2;
+  --p-red-500: #ef4444;
+  --p-red-600: #dc2626;
+  --p-red-800: #991b1b;
+  --p-red-900: #7f1d1d;
+
+  --p-green-50: #f0fdf4;
+  --p-green-100: #dcfce7;
+  --p-green-200: #bbf7d0;
+  --p-green-600: #16a34a;
+  --p-green-800: #166534;
+  --p-green-900: #14532d;
+
+  --p-orange-500: #f97316;
+
+  /* --- Semantic Tokens (Light Mode Default) --- */
+  --bg-main: var(--p-gray-50);
+  --bg-surface: var(--p-gray-0);
+  --bg-surface-hover: var(--p-gray-50);
+  --bg-subtle: var(--p-gray-100);
+  --bg-backdrop: rgba(0, 0, 0, 0.4);
+  --bg-shimmer-1: var(--p-gray-100);
+  --bg-shimmer-2: var(--p-gray-200);
+
+  --border-subtle: var(--p-gray-100);
+  --border-default: var(--p-gray-200);
+  --border-hover: var(--p-gray-300);
+
+  --text-primary: var(--p-gray-900);
+  --text-secondary: var(--p-gray-500);
+  --text-tertiary: var(--p-gray-400);
+  --text-inverse: var(--p-gray-0);
+
+  --brand-solid: var(--p-blue-600);
+  --brand-solid-hover: var(--p-blue-700);
+  --brand-subtle: var(--p-blue-50);
+  --brand-text: var(--p-blue-600);
+  --brand-icon-bg: var(--p-blue-50);
+
+  --status-success-bg: var(--p-green-100);
+  --status-success-text: var(--p-green-800);
+  --status-success-border: var(--p-green-200);
+
+  --status-error-bg: var(--p-red-50);
+  --status-error-text: var(--p-red-600);
+  --status-error-border: var(--p-red-100);
+  --status-error-icon: var(--p-red-500);
+
+  --status-info-bg: var(--p-blue-50);
+  --status-info-text: var(--p-blue-700);
+  --status-info-border: var(--p-blue-100);
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-modal: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+[data-theme="dark"] {
+  --bg-main: #0b1121;
+  --bg-surface: #151f32;
+  --bg-surface-hover: #1e293b;
+  --bg-subtle: #1e293b;
+  --bg-backdrop: rgba(0, 0, 0, 0.7);
+  --bg-shimmer-1: #1e293b;
+  --bg-shimmer-2: #334155;
+
+  --border-subtle: #1e293b;
+  --border-default: #334155;
+  --border-hover: #475569;
+
+  --text-primary: var(--p-gray-50);
+  --text-secondary: var(--p-gray-400);
+  --text-tertiary: var(--p-gray-500);
+  --text-inverse: var(--p-gray-0);
+
+  --brand-solid: var(--p-blue-600);
+  --brand-solid-hover: var(--p-blue-500);
+  --brand-subtle: rgba(59, 130, 246, 0.15);
+  --brand-text: var(--p-blue-100);
+  --brand-icon-bg: rgba(59, 130, 246, 0.2);
+
+  --status-success-bg: rgba(22, 163, 74, 0.2);
+  --status-success-text: var(--p-green-100);
+  --status-success-border: rgba(22, 163, 74, 0.3);
+
+  --status-error-bg: rgba(220, 38, 38, 0.2);
+  --status-error-text: var(--p-red-100);
+  --status-error-border: rgba(220, 38, 38, 0.3);
+  --status-error-icon: var(--p-red-500);
+
+  --status-info-bg: rgba(37, 99, 235, 0.2);
+  --status-info-text: var(--p-blue-100);
+  --status-info-border: rgba(37, 99, 235, 0.3);
+
+  --shadow-sm: none;
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  --shadow-modal: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", system-ui, -apple-system, Segoe UI, sans-serif;
+  background-color: var(--bg-main);
+  -webkit-font-smoothing: antialiased;
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--border-default);
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: var(--border-hover);
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--bg-shimmer-1) 25%,
+    var(--bg-shimmer-2) 50%,
+    var(--bg-shimmer-1) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInFromTop {
+  from {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

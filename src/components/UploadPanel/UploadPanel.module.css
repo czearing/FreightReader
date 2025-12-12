@@ -1,0 +1,145 @@
+.UploadPanel_container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--bg-surface);
+  padding: 16px;
+}
+
+@media (min-width: 768px) {
+  .UploadPanel_container {
+    padding: 24px 20px;
+  }
+}
+
+.UploadPanel_header {
+  margin-bottom: 24px;
+}
+
+.UploadPanel_title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.UploadPanel_subtitle {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin: 4px 0 0 0;
+}
+
+.UploadPanel_dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed var(--border-default);
+  border-radius: 12px;
+  padding: 32px 16px;
+  transition: all 0.2s;
+  cursor: pointer;
+  background-color: var(--bg-surface);
+  text-align: center;
+}
+
+.UploadPanel_dropzone:hover {
+  border-color: var(--brand-solid);
+  background-color: var(--bg-subtle);
+}
+
+.UploadPanel_dropzoneActive {
+  border-color: var(--brand-solid);
+  background-color: var(--brand-subtle);
+  transform: scale(1.01);
+}
+
+.UploadPanel_dropzoneDisabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.UploadPanel_dropzoneDisabled:hover {
+  border-color: var(--border-default);
+  background-color: transparent;
+}
+
+.UploadPanel_iconWrapper {
+  padding: 16px;
+  border-radius: 9999px;
+  background-color: var(--brand-icon-bg);
+  margin-bottom: 16px;
+}
+
+.UploadPanel_iconWrapperActive {
+  background-color: var(--brand-subtle);
+}
+
+.UploadPanel_uploadIcon {
+  width: 32px;
+  height: 32px;
+  color: var(--brand-solid);
+}
+
+.UploadPanel_dropText {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.UploadPanel_limitText {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  text-align: center;
+}
+
+.UploadPanel_footer {
+  margin-top: auto;
+  padding-top: 24px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.UploadPanel_formatsBtn {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--brand-text);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.UploadPanel_formatsBtn:hover {
+  color: var(--brand-solid-hover);
+}
+
+.UploadPanel_formatsIcon {
+  width: 12px;
+  height: 12px;
+}
+
+.UploadPanel_formatsList {
+  margin-top: 12px;
+  padding: 12px;
+  background-color: var(--bg-subtle);
+  border-radius: 8px;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+}
+
+.UploadPanel_formatsTitle {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.UploadPanel_list {
+  list-style-type: disc;
+  padding-left: 16px;
+  margin: 0;
+}
+
+.UploadPanel_list li {
+  margin-bottom: 2px;
+}
