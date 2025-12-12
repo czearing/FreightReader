@@ -1,74 +1,30 @@
-"use client";
+export const dynamic = "force-dynamic";
 
-import { HistoryPanel, Navbar, UploadPanel } from "@/components";
-import { useAuthGuard } from "./hooks/useAuthGuard";
-import { useDocuments } from "./hooks/useDocuments";
-import { useThemePreference } from "./hooks/useThemePreference";
-import styles from "./page.module.css";
-import { useSettings } from "./providers/SettingsProvider";
+import { redirect } from "next/navigation";
 
-export default function Page() {
-  const planLimit = 50;
-  const { session, user: userProfile } = useAuthGuard();
-  const { settings: userSettings, updateSettings: setUserSettings } =
-    useSettings();
+import { getSupabaseServerClient } from "@/services/supabase/server";
+import { DashboardClient } from "./DashboardClient";
 
-  useThemePreference(userSettings.theme);
-
+export default async function Page() {
+  const supabase = await getSupabaseServerClient();
   const {
-    documents,
-    stats,
-    processingCount,
-    canUpload,
-    upload,
-    remove,
-    refresh,
-    download,
-    downloadAll,
-  } = useDocuments(planLimit, userSettings.autoPin);
+    data: { session },
+  } = await supabase.auth.getSession();
 
-  const handleUpdateSettings = (newSettings: UserSettings) => {
-    setUserSettings(newSettings);
-    if (typeof window !== "undefined") {
-      window.localStorage.setItem("user_settings", JSON.stringify(newSettings));
-    }
-    console.warn("Settings saved (mock):", newSettings);
-  };
-
-  if (!session || !userProfile) {
-    return null;
+  if (!session?.user) {
+    redirect("/auth");
   }
 
-  return (
-    <div className={styles.App_container}>
-      <Navbar
-        user={userProfile}
-        stats={stats}
-        settings={userSettings}
-        updateSettings={handleUpdateSettings}
-        onUpdateProfile={() => {}}
-      />
+  const meta = session.user.user_metadata ?? {};
+  const user = {
+    name:
+      (meta.full_name as string | undefined) ??
+      session.user.email ??
+      "User",
+    email: session.user.email ?? "",
+    plan: "Free Plan",
+    avatarUrl: (meta.avatar_url as string | undefined) ?? null,
+  };
 
-      <main className={styles.App_main}>
-        <div className={styles.App_leftColumn}>
-          <UploadPanel
-            onUpload={upload}
-            isProcessing={processingCount > 0}
-            canUpload={canUpload}
-          />
-        </div>
-
-        <div className={styles.App_rightColumn}>
-          <HistoryPanel
-            documents={documents}
-            onRefresh={refresh}
-            onDelete={remove}
-            onDownload={download}
-            onDownloadAll={downloadAll}
-            defaultExportFormat={userSettings.defaultExportFormat}
-          />
-        </div>
-      </main>
-    </div>
-  );
+  return <DashboardClient user={user} />;
 }

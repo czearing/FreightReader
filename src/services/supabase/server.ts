@@ -1,33 +1,46 @@
 import { createServerClient } from "@supabase/ssr";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 
-type SupabaseServer = ReturnType<typeof createServerClient<unknown>>;
+type SupabaseServerClient = SupabaseClient;
 
-let supabaseServerClient: SupabaseServer | null = null;
-
-export function getSupabaseServerClient(): SupabaseClient {
-  const supabaseUrl = process.env.SUPABASE_URL;
-  const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
+export async function getSupabaseServerClient(): Promise<SupabaseServerClient> {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
   if (!supabaseUrl || !supabaseAnonKey) {
     throw new Error(
-      "Missing SUPABASE_URL or SUPABASE_ANON_KEY. Add them to your env to enable Supabase.",
+      "Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY for server auth.",
     );
   }
 
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
 
-  supabaseServerClient ??= createServerClient<unknown>(supabaseUrl, supabaseAnonKey, {
+  return createServerClient(supabaseUrl, supabaseAnonKey, {
     cookies: {
-      get: (name) => cookieStore.get(name)?.value,
+      get(name) {
+        return cookieStore.get(name)?.value;
+      },
       set(name, value, options) {
-        cookieStore.set({ name, value, ...options });
+        // In RSC cookies can be readonly; swallow if so.
+        try {
+          cookieStore.set({ name, value, ...options });
+        } catch {
+          // no-op
+        }
       },
       remove(name, options) {
-        cookieStore.set({ name, value: "", ...options });
+        try {
+          cookieStore.set({
+            name,
+            value: "",
+            expires: new Date(0),
+            ...options,
+          });
+        } catch {
+          // no-op
+        }
       },
     },
   });
-
-  return supabaseServerClient;
 }
