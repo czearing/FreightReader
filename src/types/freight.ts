@@ -34,6 +34,13 @@ export interface UserProfile {
   avatarUrl: string | null;
 }
 
+export interface UserProfileRecord {
+  user_id: string;
+  name: string;
+  plan: string;
+  avatar_url: string | null;
+}
+
 export type ExportFormat = "CSV" | "JSON" | "QBOOKS";
 
 export type ThemePreference = "light" | "dark" | "system";

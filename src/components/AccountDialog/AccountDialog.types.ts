@@ -5,5 +5,6 @@ export interface AccountDialogProps {
   onClose: () => void;
   user: UserProfile;
   stats: UserStats;
-  onSave: (updatedUser: UserProfile) => void;
+  onSave: (updatedUser: UserProfile) => Promise<void>;
+  onDelete: () => Promise<void>;
 }

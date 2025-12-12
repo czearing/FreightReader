@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { getSupabaseServerClient } from "@/services/supabase/server";
 import type {
   ThemePreference,
+  UserProfileRecord,
   UserSettings,
   UserSettingsRecord,
 } from "@/types/freight";
@@ -29,12 +30,25 @@ export default async function DashboardPage() {
     .eq("user_id", user.id)
     .maybeSingle<UserSettingsRecord>();
 
+  const { data: profileRow } = await supabase
+    .from("user_profiles")
+    .select("name, plan, avatar_url")
+    .eq("user_id", user.id)
+    .maybeSingle<UserProfileRecord>();
+
   const meta = user.user_metadata ?? {};
   const appUser = {
-    name: (meta.full_name as string | undefined) ?? user.email ?? "User",
+    name:
+      profileRow?.name ??
+      (meta.full_name as string | undefined) ??
+      user.email ??
+      "User",
     email: user.email ?? "",
-    plan: "Free Plan",
-    avatarUrl: (meta.avatar_url as string | undefined) ?? null,
+    plan: profileRow?.plan ?? "Free Plan",
+    avatarUrl:
+      profileRow?.avatar_url ??
+      (meta.avatar_url as string | undefined) ??
+      null,
   };
 
   const userSettings: UserSettings = settingsRow

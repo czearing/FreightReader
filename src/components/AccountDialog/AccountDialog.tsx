@@ -10,8 +10,11 @@ export const AccountDialog = ({
   user,
   stats,
   onSave,
+  onDelete,
 }: AccountDialogProps) => {
   const [name, setName] = useState(user.name);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
@@ -23,9 +26,25 @@ export const AccountDialog = ({
     return null;
   }
 
-  const handleSave = () => {
-    onSave({ ...user, name });
-    onClose();
+  const handleSave = async () => {
+    if (isSaving) return;
+    setIsSaving(true);
+    try {
+      await onSave({ ...user, name });
+      onClose();
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (isDeleting) return;
+    setIsDeleting(true);
+    try {
+      await onDelete();
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
@@ -121,13 +140,10 @@ export const AccountDialog = ({
             <button
               type="button"
               className={styles.AccountDialog_deleteBtn}
-              onClick={() =>
-                alert(
-                  "Delete account functionality is not implemented in this demo.",
-                )
-              }
+              onClick={handleDelete}
+              disabled={isDeleting}
             >
-              Delete My Account
+              {isDeleting ? "Deleting…" : "Delete My Account"}
             </button>
           </div>
         </div>
@@ -144,8 +160,9 @@ export const AccountDialog = ({
             type="button"
             onClick={handleSave}
             className={styles.AccountDialog_saveBtn}
+            disabled={isSaving}
           >
-            Save Changes
+            {isSaving ? "Saving…" : "Save Changes"}
           </button>
         </div>
       </div>

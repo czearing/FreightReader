@@ -24,6 +24,7 @@ export const Navbar = ({
   settings,
   updateSettings,
   onUpdateProfile,
+  onDeleteAccount,
   onSignOut,
 }: NavbarProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -210,6 +211,7 @@ export const Navbar = ({
         user={user}
         stats={stats}
         onSave={onUpdateProfile}
+        onDelete={onDeleteAccount}
       />
 
       <BillingDialog
