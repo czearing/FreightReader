@@ -13,6 +13,6 @@ export function useJobStatus(jobId?: string | null) {
     },
     enabled: Boolean(jobId),
     refetchInterval: (data) =>
-      data?.status === "complete" ? false : 1500,
+      data?.status === "done" || data?.status === "failed" ? false : 1500,
   });
 }

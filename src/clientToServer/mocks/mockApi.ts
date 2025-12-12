@@ -4,9 +4,13 @@ const mockHistory: HistoryItem[] = [
   {
     id: "job-demo-1",
     name: "BOL-West-Coast.pdf",
-    status: "complete",
+    status: "done",
     uploadedAt: new Date(Date.now() - 1000 * 60 * 60).toISOString(),
     sizeKB: 420,
+    shipper: "Walmart DC",
+    consignee: "Target DC",
+    proNumber: "BOL1234",
+    pinned: true,
   },
   {
     id: "job-demo-2",
@@ -14,13 +18,16 @@ const mockHistory: HistoryItem[] = [
     status: "processing",
     uploadedAt: new Date(Date.now() - 1000 * 60 * 20).toISOString(),
     sizeKB: 260,
+    shipper: "Maersk Seattle",
+    consignee: "Fresh Market Boise",
+    proNumber: "POD39493",
   },
 ];
 
 const jobStatuses: Record<string, JobStatus> = {
   "job-demo-1": {
     jobId: "job-demo-1",
-    status: "complete",
+    status: "done",
     progress: 100,
     updatedAt: new Date().toISOString(),
   },
@@ -39,6 +46,23 @@ const makeId = () =>
     ? crypto.randomUUID()
     : Math.random().toString(36).slice(2);
 
+const advanceJob = (jobId: string) => {
+  const existing = jobStatuses[jobId];
+  if (!existing) return null;
+
+  const now = Date.now();
+  const next = { ...existing };
+
+  if (existing.status !== "done" && existing.status !== "failed") {
+    next.progress = Math.min(100, existing.progress + Math.ceil(Math.random() * 20));
+    next.status = next.progress >= 100 ? "done" : "processing";
+    next.updatedAt = new Date(now).toISOString();
+    jobStatuses[jobId] = next;
+  }
+
+  return next;
+};
+
 export function registerJob({
   jobId,
   name,
@@ -46,26 +70,41 @@ export function registerJob({
   status = "queued",
   progress = 0,
   uploadedAt = new Date().toISOString(),
+  shipper,
+  consignee,
+  proNumber,
+  pinned,
+  errorMessage,
 }: {
   jobId: string;
   name: string;
   sizeKB?: number;
-  status?: HistoryItem["status"];
+  status?: HistoryItem["status"] | JobStatus["status"];
   progress?: number;
   uploadedAt?: string;
+  shipper?: string;
+  consignee?: string;
+  proNumber?: string;
+  pinned?: boolean;
+  errorMessage?: string;
 }) {
   const historyItem: HistoryItem = {
     id: jobId,
     name: name || "unnamed-upload.pdf",
-    status,
+    status: status === "queued" ? "processing" : (status as HistoryItem["status"]),
     uploadedAt,
     sizeKB: sizeKB ?? 512,
+    shipper,
+    consignee,
+    proNumber,
+    pinned,
+    errorMessage,
   };
 
   mockHistory.unshift(historyItem);
   jobStatuses[jobId] = {
     jobId,
-    status,
+    status: status === "queued" ? "processing" : status,
     progress,
     updatedAt: uploadedAt,
   };
@@ -73,28 +112,25 @@ export function registerJob({
 
 export async function fetchHistory(): Promise<HistoryItem[]> {
   await sleep(220);
-  return mockHistory.map((item) => ({ ...item }));
+  const withStatus = mockHistory.map((item) => {
+    const status = advanceJob(item.id);
+    if (status) {
+      item.status = status.status as HistoryItem["status"];
+    }
+    return { ...item };
+  });
+  return withStatus;
 }
 
 export async function fetchJobStatus(jobId: string): Promise<JobStatus> {
   await sleep(180);
-  const existing = jobStatuses[jobId];
+  const status = advanceJob(jobId);
 
-  if (!existing) {
+  if (!status) {
     throw new Error("Job not found");
   }
 
-  const now = Date.now();
-  const next = { ...existing };
-
-  if (existing.status !== "complete" && existing.status !== "error") {
-    next.progress = Math.min(100, existing.progress + Math.ceil(Math.random() * 20));
-    next.status = next.progress >= 100 ? "complete" : "processing";
-    next.updatedAt = new Date(now).toISOString();
-    jobStatuses[jobId] = next;
-  }
-
-  return { ...next };
+  return { ...status };
 }
 
 export async function createUpload(

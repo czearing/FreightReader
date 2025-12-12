@@ -1,16 +1,19 @@
 .dropzone {
-  border: 1px dashed rgba(255, 255, 255, 0.25);
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 16px;
-  padding: 1.5rem;
+  border: 1px dashed #cbd5e1;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 1.25rem;
   display: grid;
   gap: 0.6rem;
   cursor: pointer;
+  transition: border-color 140ms ease, box-shadow 140ms ease,
+    background 140ms ease;
 }
 
 .dropzone[data-drag-active="true"] {
-  border-color: rgba(59, 130, 246, 0.45);
-  background: rgba(59, 130, 246, 0.08);
+  border-color: #0070f3;
+  box-shadow: 0 0 0 4px rgba(0, 112, 243, 0.1);
+  background: #f5f9ff;
 }
 
 .row {
@@ -23,22 +26,22 @@
   width: 48px;
   height: 48px;
   border-radius: 12px;
-  background: rgba(59, 130, 246, 0.18);
-  border: 1px solid rgba(59, 130, 246, 0.35);
+  background: #e8f1ff;
+  border: 1px solid #cfe2ff;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: #60a5fa;
+  color: #0b67d7;
 }
 
 .iconWrap[data-state="done"] {
-  background: rgba(52, 211, 153, 0.18);
-  border-color: rgba(52, 211, 153, 0.35);
-  color: #34d399;
+  background: #e7f6ee;
+  border-color: #c9ead8;
+  color: #16a34a;
 }
 
 .iconWrap[data-state="uploading"] {
-  background: rgba(59, 130, 246, 0.22);
+  background: #e8f1ff;
 }
 
 .spinner {
@@ -51,23 +54,23 @@
 
 .headline {
   margin: 0;
-  color: #e5e7eb;
+  color: #0f172a;
   font-weight: 700;
 }
 
 .subline {
   margin: 0;
-  color: rgba(229, 231, 235, 0.75);
+  color: #475569;
 }
 
 .fileTag {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  padding: 0.65rem 0.75rem;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.05);
-  color: rgba(229, 231, 235, 0.9);
+  padding: 0.55rem 0.7rem;
+  border-radius: 10px;
+  background: #e9eef5;
+  color: #0f172a;
   font-size: 0.95rem;
 }
 

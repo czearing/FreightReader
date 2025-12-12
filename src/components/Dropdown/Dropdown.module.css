@@ -1,11 +1,11 @@
 .content {
   min-width: 200px;
-  background: linear-gradient(150deg, #0f172a, #0b1224);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 14px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  background: #ffffff;
+  border: 1px solid #d5dbe5;
+  border-radius: 10px;
+  box-shadow: 0 18px 38px rgba(15, 23, 42, 0.12);
   padding: 0.4rem;
-  color: #e5e7eb;
+  color: #0f172a;
 }
 
 .item {
@@ -20,21 +20,21 @@
 }
 
 .item:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: #f1f5f9;
 }
 
 .item:focus-visible {
-  outline: 2px solid rgba(59, 130, 246, 0.5);
+  outline: 2px solid rgba(0, 112, 243, 0.35);
   outline-offset: 2px;
 }
 
 .item[aria-disabled="true"] {
-  color: rgba(229, 231, 235, 0.55);
+  color: #94a3b8;
   cursor: not-allowed;
 }
 
 .danger {
-  color: #fca5a5;
+  color: #b91c1c;
 }
 
 .inset {
@@ -43,19 +43,19 @@
 
 .separator {
   height: 1px;
-  background: rgba(255, 255, 255, 0.08);
+  background: #e2e8f0;
   margin: 0.35rem 0.2rem;
   border: none;
 }
 
 .label {
-  color: rgba(229, 231, 235, 0.7);
+  color: #64748b;
   font-size: 0.85rem;
   padding: 0.5rem 0.65rem;
 }
 
 .icon {
-  color: rgba(229, 231, 235, 0.85);
+  color: #475569;
   display: inline-flex;
   align-items: center;
   justify-content: center;

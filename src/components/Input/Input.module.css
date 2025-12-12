@@ -1,11 +1,11 @@
 .wrapper {
   display: grid;
   gap: 0.4rem;
-  color: #e5e7eb;
+  color: #0f172a;
 }
 
 .label {
-  font-weight: 700;
+  font-weight: 600;
   font-size: 0.95rem;
   letter-spacing: 0.01em;
 }
@@ -15,24 +15,23 @@
   grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 0.35rem;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid #d5dbe5;
+  border-radius: 10px;
+  background: #ffffff;
   padding: 0.35rem 0.75rem;
   transition: border-color 160ms ease, box-shadow 160ms ease,
     background 160ms ease;
 }
 
 .field:focus-within {
-  border-color: rgba(59, 130, 246, 0.6);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.22);
-  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(0, 112, 243, 0.6);
+  box-shadow: 0 0 0 3px rgba(0, 112, 243, 0.2);
 }
 
 .input {
   background: transparent;
   border: none;
-  color: #f9fafb;
+  color: #0f172a;
   outline: none;
   width: 100%;
   font-size: 1rem;
@@ -40,27 +39,27 @@
 }
 
 .input::placeholder {
-  color: rgba(229, 231, 235, 0.55);
+  color: #8f9aad;
 }
 
 .icon {
-  color: rgba(229, 231, 235, 0.8);
+  color: #6b7280;
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 
 .hint {
-  color: rgba(229, 231, 235, 0.75);
+  color: #556078;
   font-size: 0.9rem;
 }
 
 .error {
-  border-color: rgba(248, 113, 113, 0.7);
-  box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.2);
+  border-color: rgba(239, 68, 68, 0.8);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.18);
 }
 
 .errorText {
-  color: #fca5a5;
+  color: #b91c1c;
   font-size: 0.9rem;
 }

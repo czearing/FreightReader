@@ -1,4 +1,5 @@
 export interface DropzoneProps {
-  onJobCreated?: (jobId: string) => void;
+  onFilesSelected?: (files: File[]) => void;
   className?: string;
+  isBusy?: boolean;
 }

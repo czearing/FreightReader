@@ -6,27 +6,27 @@
 
 .button {
   align-items: center;
-  background: linear-gradient(135deg, #1f8aff, #3b82f6);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 12px;
-  color: #f9fafb;
+  background: #0070f3;
+  border: 1px solid #005ac1;
+  border-radius: 8px;
+  color: #ffffff;
   cursor: pointer;
   display: inline-flex;
   font-size: 0.95rem;
-  font-weight: 700;
+  font-weight: 600;
   gap: 0.5rem;
   justify-content: center;
   letter-spacing: 0.01em;
   outline: none;
-  padding: 0.8rem 1.2rem;
+  padding: 0.7rem 1.1rem;
   position: relative;
   text-decoration: none;
   transition: transform 120ms ease, box-shadow 120ms ease,
-    background 180ms ease, border-color 180ms ease, opacity 120ms ease;
+    background 150ms ease, border-color 150ms ease, opacity 120ms ease;
 }
 
 .button:focus-visible {
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.35), 0 15px 35px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 0 3px rgba(0, 112, 243, 0.24);
   transform: translateY(-1px);
 }
 
@@ -36,7 +36,7 @@
 
 .button:disabled {
   cursor: not-allowed;
-  opacity: 0.7;
+  opacity: 0.6;
   transform: none;
 }
 
@@ -58,37 +58,35 @@
 }
 
 .primary {
-  background: linear-gradient(135deg, #2563eb, #1d4ed8);
-  box-shadow: 0 18px 38px rgba(37, 99, 235, 0.22),
-    0 3px 8px rgba(37, 99, 235, 0.28);
+  background: #0070f3;
+  border-color: #005ac1;
 }
 
 .primary:hover:not(:disabled) {
-  background: linear-gradient(135deg, #1d4ed8, #1e3a8a);
+  background: #0060d4;
 }
 
 .secondary {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.12);
-  color: #e5e7eb;
+  background: #e9eef5;
+  border-color: #d5dbe5;
+  color: #0f172a;
 }
 
 .secondary:hover:not(:disabled) {
-  border-color: rgba(255, 255, 255, 0.18);
-  background: rgba(255, 255, 255, 0.08);
+  background: #dce4ef;
+  border-color: #c9d2df;
 }
 
 .ghost {
   background: transparent;
-  border-color: rgba(255, 255, 255, 0.12);
-  color: #d1d5db;
+  border-color: #d5dbe5;
+  color: #0f172a;
 }
 
 .ghost:hover:not(:disabled) {
-  border-color: rgba(255, 255, 255, 0.24);
-  background: rgba(255, 255, 255, 0.05);
+  background: #e9eef5;
 }
 
 .loading {
-  opacity: 0.9;
+  opacity: 0.85;
 }

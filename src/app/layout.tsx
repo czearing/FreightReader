@@ -14,7 +14,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body style={{ margin: 0, background: "#050814", color: "#e5e7eb" }}>
+      <body
+        style={{
+          margin: 0,
+          background: "#f8f9fa",
+          color: "#0f172a",
+          fontFamily: "Inter, system-ui, -apple-system, Segoe UI, sans-serif",
+        }}
+      >
         <Providers>{children}</Providers>
       </body>
     </html>

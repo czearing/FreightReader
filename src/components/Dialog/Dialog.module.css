@@ -1,21 +1,21 @@
 .overlay {
-  background: rgba(3, 7, 18, 0.6);
-  backdrop-filter: blur(10px);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(6px);
   inset: 0;
   position: fixed;
   animation: fadeIn 180ms ease forwards;
 }
 
 .content {
-  background: linear-gradient(145deg, #0f172a, #0b1224);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 18px;
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
-  color: #e5e7eb;
+  background: #ffffff;
+  border: 1px solid #d5dbe5;
+  border-radius: 14px;
+  box-shadow: 0 30px 90px rgba(15, 23, 42, 0.18);
+  color: #0f172a;
   left: 50%;
   max-width: 520px;
   outline: none;
-  padding: 1.8rem;
+  padding: 1.4rem;
   position: fixed;
   top: 50%;
   transform: translate(-50%, -48%);
@@ -32,21 +32,21 @@
 
 .title {
   font-size: 1.4rem;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: -0.02em;
 }
 
 .description {
-  color: rgba(229, 231, 235, 0.8);
+  color: #475569;
   line-height: 1.6;
   margin-top: 0.5rem;
 }
 
 .close {
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid #d5dbe5;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.06);
-  color: #e5e7eb;
+  background: #f8fafc;
+  color: #0f172a;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -56,11 +56,11 @@
 }
 
 .close:hover {
-  background: rgba(255, 255, 255, 0.12);
+  background: #e9eef5;
 }
 
 .close:focus-visible {
-  outline: 2px solid rgba(59, 130, 246, 0.6);
+  outline: 2px solid rgba(0, 112, 243, 0.45);
   outline-offset: 2px;
 }
 

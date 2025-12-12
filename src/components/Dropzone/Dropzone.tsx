@@ -15,65 +15,58 @@ import styles from "./Dropzone.module.css";
 import type { DropzoneProps } from "./Dropzone.types";
 
 import { Button, showToast } from "..";
-import { useUpload } from "../../clientToServer/hooks";
 
-export function Dropzone({ onJobCreated, className }: DropzoneProps) {
-  const upload = useUpload();
-  const [lastFileName, setLastFileName] = useState<string>();
+export function Dropzone({ onFilesSelected, className, isBusy }: DropzoneProps) {
+  const [recentFiles, setRecentFiles] = useState<string[]>([]);
   const [status, setStatus] = useState<"idle" | "uploading" | "done">("idle");
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
-      const file = acceptedFiles[0];
-      if (!file) {
-        return;
-      }
-
-      setLastFileName(file.name);
+      if (!acceptedFiles.length) return;
+      setRecentFiles(acceptedFiles.slice(0, 3).map((file) => file.name));
       setStatus("uploading");
-
-      upload.mutate(
-        {
-          name: file.name,
-          sizeKB: Math.max(1, Math.round(file.size / 1024)),
-          file,
-        },
-        {
-          onSuccess: ({ jobId }) => {
-            setStatus("done");
-            onJobCreated?.(jobId);
-            showToast({
-              title: "Upload started",
-              description: `Job ${jobId} is processing.`,
-              tone: "success",
-            });
-          },
-          onError: (error) => {
-            setStatus("idle");
-            const message =
-              error instanceof Error ? error.message : "Unable to upload file.";
-            showToast({
-              title: "Upload failed",
-              description: message,
-              tone: "error",
-            });
-          },
-        }
-      );
+      onFilesSelected?.(acceptedFiles);
+      setTimeout(() => setStatus("done"), 320);
     },
-    [upload, onJobCreated]
+    [onFilesSelected],
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    multiple: false,
+    multiple: true,
+    maxFiles: 10,
+    maxSize: 10 * 1024 * 1024,
+    disabled: isBusy,
     accept: {
       "application/pdf": [".pdf"],
       "image/*": [".png", ".jpg", ".jpeg", ".webp"],
     },
+    onDropRejected: (rejections) => {
+      const hasTooMany = rejections.some((rej) =>
+        rej.errors.some((error) => error.code === "too-many-files"),
+      );
+      const hasLarge = rejections.some((rej) =>
+        rej.errors.some((error) => error.code === "file-too-large"),
+      );
+
+      if (hasTooMany) {
+        showToast({
+          title: "Upload limit",
+          description: "Max 10 files per batch.",
+          tone: "warning",
+        });
+      }
+      if (hasLarge) {
+        showToast({
+          title: "File too large",
+          description: "Each file must be under 10 MB.",
+          tone: "error",
+        });
+      }
+    },
   });
 
-  const isLoading = upload.isPending || status === "uploading";
+  const isLoading = isBusy || status === "uploading";
 
   return (
     <div
@@ -96,10 +89,10 @@ export function Dropzone({ onJobCreated, className }: DropzoneProps) {
           <p className={styles.headline}>
             {isDragActive
               ? "Drop to upload"
-              : "Drop freight PDFs or click to browse"}
+              : "Drag & drop up to 10 files, or click to select."}
           </p>
           <p className={styles.subline}>
-            We’ll request a signed URL, upload securely, then start parsing.
+            Drop multiple BOLs, PODs, or Rate Confirmations (PDF or image).
           </p>
         </div>
         <Button
@@ -107,13 +100,13 @@ export function Dropzone({ onJobCreated, className }: DropzoneProps) {
           appearance="secondary"
           isLoading={isLoading}
         >
-          {isLoading ? "Uploading…" : "Select file"}
+          {isLoading ? "Uploading…" : "Select files"}
         </Button>
       </div>
-      {lastFileName && (
+      {recentFiles.length > 0 && (
         <div className={styles.fileTag}>
           <FileText size={16} />
-          <span>{lastFileName}</span>
+          <span>{recentFiles.join(", ")}</span>
         </div>
       )}
     </div>

@@ -1,11 +1,19 @@
-export type JobStage = "queued" | "processing" | "complete" | "error";
+export type JobStage = "queued" | "processing" | "done" | "failed";
+
+export type HistoryStatus = "processing" | "done" | "failed";
 
 export interface HistoryItem {
   id: string;
   name: string;
-  status: JobStage;
+  status: HistoryStatus;
   uploadedAt: string;
   sizeKB: number;
+  shipper?: string;
+  consignee?: string;
+  proNumber?: string;
+  pinned?: boolean;
+  errorMessage?: string;
+  temp?: boolean;
 }
 
 export interface UploadPayload {
