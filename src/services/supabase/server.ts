@@ -1,6 +1,9 @@
-import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import { createServerClient } from "@supabase/ssr";
+import { cookies } from "next/headers";
 
-let supabaseServerClient: SupabaseClient | null = null;
+type SupabaseServer = ReturnType<typeof createServerClient<unknown>>;
+
+let supabaseServerClient: SupabaseServer | null = null;
 
 export function getSupabaseServerClient(): SupabaseClient {
   const supabaseUrl = process.env.SUPABASE_URL;
@@ -12,8 +15,18 @@ export function getSupabaseServerClient(): SupabaseClient {
     );
   }
 
-  supabaseServerClient ??= createClient(supabaseUrl, supabaseAnonKey, {
-    auth: { persistSession: false },
+  const cookieStore = cookies();
+
+  supabaseServerClient ??= createServerClient<unknown>(supabaseUrl, supabaseAnonKey, {
+    cookies: {
+      get: (name) => cookieStore.get(name)?.value,
+      set(name, value, options) {
+        cookieStore.set({ name, value, ...options });
+      },
+      remove(name, options) {
+        cookieStore.set({ name, value: "", ...options });
+      },
+    },
   });
 
   return supabaseServerClient;
