@@ -1,9 +1,11 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 
 import { Button, Input, showToast } from "@/components";
 import { getSupabaseBrowserClient } from "@/services/supabase/client";
+import styles from "./auth.module.css";
 
 const redirectPath = "/auth/callback";
 
@@ -131,8 +133,19 @@ export default function AuthPage() {
         <Button
           type="button"
           appearance="secondary"
+          icon={
+            <Image
+              src="/google-logo.svg"
+              alt=""
+              width={18}
+              height={18}
+              aria-hidden
+              priority
+            />
+          }
           isLoading={isGoogle}
           onClick={handleGoogle}
+          className={styles.googleButton}
         >
           {isGoogle ? "Redirecting…" : "Continue with Google"}
         </Button>
