@@ -1,7 +1,8 @@
 import { useEffect, useState, type KeyboardEvent } from "react";
 import { X } from "lucide-react";
 
-import type { ExportFormat, ThemePreference } from "@/types/freight";
+import type { ExportFormat } from "@/types/documents";
+import type { ThemePreference } from "@/types/user";
 import styles from "./PreferencesDialog.module.css";
 import type { PreferencesDialogProps } from "./PreferencesDialog.types";
 

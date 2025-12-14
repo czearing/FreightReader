@@ -1,6 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import type { ExportFormat, FreightDocument, UserStats } from "@/types/freight";
+import type {
+  ExportFormat,
+  ExtractedData,
+  FreightDocument,
+} from "@/types/documents";
+import type { UserStats } from "@/types/user";
+import { extractDocument } from "@/services/extraction/process";
 
 const createTempId = () =>
   `temp-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
@@ -15,17 +21,6 @@ const downloadFile = (content: string, filename: string, mimeType: string) => {
   anchor.click();
   document.body.removeChild(anchor);
   URL.revokeObjectURL(url);
-};
-
-const mockExtract = async (): Promise<FreightDocument["data"]> => {
-  await new Promise((resolve) => setTimeout(resolve, 600));
-  return {
-    shipper: "Acme Freight Hub",
-    consignee: "Globex Warehouse",
-    date: new Date().toISOString().split("T")[0],
-    proNumber: Math.random().toString(36).slice(2, 10).toUpperCase(),
-    totalWeight: `${Math.floor(Math.random() * 10000) + 1000} lbs`,
-  };
 };
 
 export const useDocuments = (limit: number, autoPin: boolean) => {
@@ -61,7 +56,10 @@ export const useDocuments = (limit: number, autoPin: boolean) => {
 
       const processDocs = newDocs.map(async (doc) => {
         try {
-          const extractedData = await mockExtract();
+          if (!doc.file) {
+            throw new Error("File payload missing.");
+          }
+          const extractedData = await extractDocument(doc.file);
           setDocuments((prev) =>
             prev.map((d) =>
               d.id === doc.id
@@ -69,6 +67,7 @@ export const useDocuments = (limit: number, autoPin: boolean) => {
                     ...d,
                     status: "DONE",
                     data: extractedData,
+                    failureReason: undefined,
                     pinned: autoPin,
                   }
                 : d,
@@ -83,7 +82,9 @@ export const useDocuments = (limit: number, autoPin: boolean) => {
                     ...d,
                     status: "FAILED",
                     failureReason:
-                      "AI Extraction Failed. Ensure API Key is valid and image is clear.",
+                      error instanceof Error
+                        ? error.message
+                        : "AI Extraction Failed. Ensure API Key is valid and image is clear.",
                   }
                 : d,
             ),
@@ -102,6 +103,20 @@ export const useDocuments = (limit: number, autoPin: boolean) => {
     setDocuments((prev) => prev.filter((d) => d.id !== id));
   }, []);
 
+  const update = useCallback((id: string, updater: (data: ExtractedData) => ExtractedData) => {
+    setDocuments((prev) =>
+      prev.map((doc) =>
+        doc.id === id && doc.data
+          ? {
+              ...doc,
+              data: updater(doc.data),
+              status: "DONE",
+            }
+          : doc,
+      ),
+    );
+  }, []);
+
   const refresh = useCallback(() => {
     console.warn("Refresh triggered (mock)");
   }, []);
@@ -113,15 +128,39 @@ export const useDocuments = (limit: number, autoPin: boolean) => {
         return;
       }
 
+      if (!doc.data.readyForExport) {
+        alert("Please resolve required fields before exporting.");
+        return;
+      }
+
       if (format === "JSON") {
         const content = JSON.stringify(doc.data, null, 2);
         downloadFile(content, `${doc.name}.json`, "application/json");
       } else if (format === "CSV") {
-        const headers = "Shipper,Consignee,Date,PRO Number,Weight\n";
-        const row = `"${doc.data.shipper}","${doc.data.consignee}","${doc.data.date}","${doc.data.proNumber}","${doc.data.totalWeight}"`;
+        const headers =
+          "Document Type,Shipper,Shipper Address,Consignee,Consignee Address,BOL,PRO,PO,Pickup Date,Delivery Date,Quantity,Pieces,Weight (lbs),Handwritten Notes\n";
+        const row = [
+          doc.data.documentType,
+          doc.data.shipper.name ?? "",
+          doc.data.shipper.address ?? "",
+          doc.data.consignee.name ?? "",
+          doc.data.consignee.address ?? "",
+          doc.data.references.bol ?? "",
+          doc.data.references.pro ?? "",
+          doc.data.references.po ?? "",
+          doc.data.dates.pickup ?? "",
+          doc.data.dates.delivery ?? "",
+          doc.data.quantity ?? "",
+          doc.data.pieces ?? "",
+          doc.data.weightLbs ?? "",
+          doc.data.handwrittenNotes ?? "",
+        ]
+          .map((value) => `"${String(value).replace(/"/g, '""')}"`)
+          .join(",");
+
         downloadFile(headers + row, `${doc.name}.csv`, "text/csv");
       } else if (format === "QBOOKS") {
-        const content = `!TRNS\tTRNSID\tDATE\tACCNT\tNAME\tAMOUNT\tDOCNUM\tMEMO\nTRNS\t${doc.id}\t${doc.data.date}\tFreight Exp\t${doc.data.shipper}\t0.00\t${doc.data.proNumber}\t${doc.data.totalWeight}`;
+        const content = `!TRNS\tTRNSID\tDATE\tACCNT\tNAME\tAMOUNT\tDOCNUM\tMEMO\nTRNS\t${doc.id}\t${doc.data.dates.pickup ?? ""}\tFreight Exp\t${doc.data.shipper.name ?? ""}\t0.00\t${doc.data.references.pro ?? doc.data.references.bol ?? ""}\tWeight: ${doc.data.weightLbs ?? "n/a"} lbs`;
         downloadFile(content, `${doc.name}.iif`, "text/plain");
       }
     },
@@ -131,7 +170,7 @@ export const useDocuments = (limit: number, autoPin: boolean) => {
   const downloadAll = useCallback(
     (format: ExportFormat) => {
       const completedDocs = documents.filter(
-        (d) => d.status === "DONE" && d.data,
+        (d) => d.status === "DONE" && d.data && d.data.readyForExport,
       );
       if (completedDocs.length === 0) {
         return;
@@ -147,13 +186,14 @@ export const useDocuments = (limit: number, autoPin: boolean) => {
           `freight-export-${new Date().toISOString().split("T")[0]}.json`,
           "application/json",
         );
-        alert("Downloaded all files as a single JSON array.");
+        alert("Downloaded all exportable files as a single JSON array.");
       } else if (format === "CSV") {
-        const headers = "Filename,Shipper,Consignee,Date,PRO Number,Weight\n";
+        const headers =
+          "Filename,Document Type,Shipper,Shipper Address,Consignee,Consignee Address,BOL,PRO,PO,Pickup Date,Delivery Date,Quantity,Pieces,Weight (lbs),Handwritten Notes\n";
         const rows = completedDocs
           .map(
             (d) =>
-              `"${d.name}","${d.data?.shipper}","${d.data?.consignee}","${d.data?.date}","${d.data?.proNumber}","${d.data?.totalWeight}"`,
+              `"${d.name}","${d.data?.documentType ?? ""}","${d.data?.shipper.name ?? ""}","${d.data?.shipper.address ?? ""}","${d.data?.consignee.name ?? ""}","${d.data?.consignee.address ?? ""}","${d.data?.references.bol ?? ""}","${d.data?.references.pro ?? ""}","${d.data?.references.po ?? ""}","${d.data?.dates.pickup ?? ""}","${d.data?.dates.delivery ?? ""}","${d.data?.quantity ?? ""}","${d.data?.pieces ?? ""}","${d.data?.weightLbs ?? ""}","${d.data?.handwrittenNotes ?? ""}"`,
           )
           .join("\n");
         downloadFile(
@@ -180,6 +220,7 @@ export const useDocuments = (limit: number, autoPin: boolean) => {
     canUpload,
     upload,
     remove,
+    update,
     refresh,
     download,
     downloadAll,

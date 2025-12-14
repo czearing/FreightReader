@@ -25,6 +25,7 @@ export const HistoryPanel = ({
   documents,
   onRefresh,
   onDelete,
+  onUpdate,
   onDownload,
   onDownloadAll,
   defaultExportFormat = "CSV",
@@ -43,13 +44,13 @@ export const HistoryPanel = ({
         return true;
       }
       const nameMatch = doc.name.toLowerCase().includes(normalizedQuery);
-      const shipperMatch = doc.data?.shipper
+      const shipperMatch = doc.data?.shipper.name
         ?.toLowerCase()
         .includes(normalizedQuery);
-      const consigneeMatch = doc.data?.consignee
+      const consigneeMatch = doc.data?.consignee.name
         ?.toLowerCase()
         .includes(normalizedQuery);
-      const proMatch = doc.data?.proNumber
+      const proMatch = doc.data?.references.pro
         ?.toLowerCase()
         .includes(normalizedQuery);
       return [nameMatch, shipperMatch, consigneeMatch, proMatch].some(Boolean);
@@ -62,10 +63,14 @@ export const HistoryPanel = ({
     );
   }, [documents, normalizedQuery]);
 
-  const completedDocsCount = useMemo(
-    () => documents.filter((doc) => doc.status === "DONE").length,
+  const readyDocs = useMemo(
+    () =>
+      documents.filter(
+        (doc) => doc.status === "DONE" && doc.data?.readyForExport,
+      ),
     [documents],
   );
+  const completedDocsCount = readyDocs.length;
 
   const getStatusBadge = (
     status: HistoryPanelProps["documents"][number]["status"],
@@ -177,7 +182,7 @@ export const HistoryPanel = ({
                       className={styles.HistoryPanel_inlineIcon}
                       aria-hidden
                     />{" "}
-                    As JSON (.zip)
+                    As JSON
                   </button>
                   <button
                     type="button"
@@ -189,7 +194,7 @@ export const HistoryPanel = ({
                       className={styles.HistoryPanel_inlineIcon}
                       aria-hidden
                     />{" "}
-                    As QuickBooks (.zip)
+                    As QuickBooks
                   </button>
                 </div>
               </>
@@ -276,7 +281,19 @@ export const HistoryPanel = ({
                         </div>
                       </td>
                       <td className={styles.HistoryPanel_td}>
-                        {getStatusBadge(doc.status)}
+                        <div className={styles.HistoryPanel_statusStack}>
+                          {getStatusBadge(doc.status)}
+                          {doc.status === "DONE" && doc.data && !doc.data.readyForExport && (
+                            <span
+                              className={cx(
+                                styles.HistoryPanel_badge,
+                                styles.HistoryPanel_badgeReview,
+                              )}
+                            >
+                              Needs review
+                            </span>
+                          )}
+                        </div>
                       </td>
                       <td className={cx(styles.HistoryPanel_td, styles.HistoryPanel_muted)}>
                         {doc.status === "PROCESSING" ? (
@@ -289,10 +306,10 @@ export const HistoryPanel = ({
                         ) : doc.status === "DONE" && doc.data ? (
                           <span
                             className={styles.HistoryPanel_routeCell}
-                            title={`${doc.data.shipper} → ${doc.data.consignee}`}
+                            title={`${doc.data.shipper.name ?? "Missing"} → ${doc.data.consignee.name ?? "Missing"}`}
                           >
-                            {doc.data.shipper.split(" ")[0]} →{" "}
-                            {doc.data.consignee.split(" ")[0]}
+                            {(doc.data.shipper.name ?? "Missing").split(" ")[0]} →{" "}
+                            {(doc.data.consignee.name ?? "Missing").split(" ")[0]}
                           </span>
                         ) : (
                           <span
@@ -321,7 +338,10 @@ export const HistoryPanel = ({
                             )}
                           />
                         ) : (
-                          doc.data?.proNumber ?? "-"
+                          doc.data?.references.pro ??
+                          doc.data?.references.bol ??
+                          doc.data?.references.po ??
+                          "-"
                         )}
                       </td>
                       <td
@@ -346,6 +366,7 @@ export const HistoryPanel = ({
                             <button
                               type="button"
                               onClick={() => onDownload(doc.id, "CSV")}
+                              disabled={!doc.data?.readyForExport}
                               className={cx(
                                 styles.HistoryPanel_actionBtn,
                                 styles.HistoryPanel_actionBtnDownload,
@@ -410,23 +431,32 @@ export const HistoryPanel = ({
                     </div>
                   ) : doc.status === "DONE" && doc.data ? (
                     <div className={styles.HistoryPanel_cardData}>
+                      {!doc.data.readyForExport && (
+                        <div className={styles.HistoryPanel_cardBadge}>
+                          <AlertTriangle size={12} aria-hidden />
+                          Needs review
+                        </div>
+                      )}
                       <p>
                         <span className={styles.HistoryPanel_cardLabel}>
                           Shipper:
                         </span>{" "}
-                        {doc.data.shipper}
+                        {doc.data.shipper.name ?? "Missing"}
                       </p>
                       <p>
                         <span className={styles.HistoryPanel_cardLabel}>
                           Consignee:
                         </span>{" "}
-                        {doc.data.consignee}
+                        {doc.data.consignee.name ?? "Missing"}
                       </p>
                       <p>
                         <span className={styles.HistoryPanel_cardLabel}>
                           PRO:
                         </span>{" "}
-                        {doc.data.proNumber}
+                        {doc.data.references.pro ??
+                          doc.data.references.bol ??
+                          doc.data.references.po ??
+                          "-"}
                       </p>
                     </div>
                   ) : (
@@ -458,14 +488,15 @@ export const HistoryPanel = ({
                         Details
                       </button>
                       {doc.status === "DONE" && (
-                        <button
-                          type="button"
-                          onClick={() => onDownload(doc.id, "CSV")}
-                          className={cx(
-                            styles.HistoryPanel_cardBtn,
-                            styles.HistoryPanel_cardBtnDownload,
-                          )}
-                        >
+                      <button
+                        type="button"
+                        onClick={() => onDownload(doc.id, "CSV")}
+                        disabled={!doc.data.readyForExport}
+                        className={cx(
+                          styles.HistoryPanel_cardBtn,
+                          styles.HistoryPanel_cardBtnDownload,
+                        )}
+                      >
                           Download
                         </button>
                       )}
@@ -486,6 +517,16 @@ export const HistoryPanel = ({
           onDelete={() => {
             onDelete(selectedDoc.id);
             setSelectedDoc(null);
+          }}
+          onUpdate={(data) => {
+            if (data) {
+              onUpdate(selectedDoc.id, () => data);
+              setSelectedDoc((previous) =>
+                previous && previous.id === selectedDoc.id
+                  ? { ...previous, data }
+                  : previous,
+              );
+            }
           }}
         />
       )}

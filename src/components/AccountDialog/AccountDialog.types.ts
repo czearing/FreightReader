@@ -1,4 +1,4 @@
-import type { UserProfile, UserStats } from "@/types/freight";
+import type { UserProfile, UserStats } from "@/types/user";
 
 export interface AccountDialogProps {
   isOpen: boolean;

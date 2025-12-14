@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import type { ThemePreference } from "@/types/freight";
+import type { ThemePreference } from "@/types/user";
 
 type ThemeMode = "light" | "dark";
 

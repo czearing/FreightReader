@@ -162,6 +162,77 @@
   font-size: 0.875rem;
 }
 
+.DocumentModal_form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.DocumentModal_issuePanel {
+  border: 1px solid var(--status-warning-border);
+  background-color: var(--status-warning-bg);
+  color: var(--text-primary);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.DocumentModal_issueHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.DocumentModal_issueIcon {
+  color: var(--status-warning-text);
+  margin-top: 2px;
+}
+
+.DocumentModal_issueTitle {
+  margin: 0;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.DocumentModal_issueSubtitle {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.DocumentModal_issueList {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: var(--text-primary);
+}
+
+.DocumentModal_issueBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+  margin-right: 6px;
+  font-weight: 600;
+}
+
+.DocumentModal_issueBadgeError {
+  background-color: var(--status-error-bg);
+  color: var(--status-error-text);
+  border: 1px solid var(--status-error-border);
+}
+
+.DocumentModal_issueBadgeWarn {
+  background-color: var(--status-warning-bg);
+  color: var(--status-warning-text);
+  border: 1px solid var(--status-warning-border);
+}
+
 .DocumentModal_grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -200,6 +271,85 @@
   color: var(--text-primary);
   font-weight: 500;
   margin: 0;
+}
+
+.DocumentModal_fieldInputs {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+@media (min-width: 768px) {
+  .DocumentModal_fieldInputs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.DocumentModal_selectWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.DocumentModal_selectLabel {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+.DocumentModal_select {
+  width: 100%;
+  height: 42px;
+  border-radius: 8px;
+  border: 1px solid var(--border-default);
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+  padding: 0 12px;
+  font-size: 0.875rem;
+}
+
+.DocumentModal_select:focus {
+  border-color: var(--brand-solid);
+  outline: none;
+  box-shadow: 0 0 0 1px var(--brand-solid);
+}
+
+.DocumentModal_selectError {
+  border-color: var(--status-error-border);
+}
+
+.DocumentModal_refGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.DocumentModal_textarea {
+  width: 100%;
+  min-height: 120px;
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+  padding: 10px 12px;
+  resize: vertical;
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+}
+
+.DocumentModal_textarea:focus {
+  border-color: var(--brand-solid);
+  outline: none;
+  box-shadow: 0 0 0 1px var(--brand-solid);
+}
+
+.DocumentModal_readyBanner {
+  border: 1px solid var(--status-success-border);
+  background-color: var(--status-success-bg);
+  color: var(--status-success-text);
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-weight: 600;
 }
 
 .DocumentModal_footer {
@@ -263,6 +413,12 @@
 
 .DocumentModal_downloadBtn:hover {
   background-color: var(--brand-solid-hover);
+}
+
+.DocumentModal_rawBtn:disabled,
+.DocumentModal_downloadBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .DocumentModal_loadingTitle {

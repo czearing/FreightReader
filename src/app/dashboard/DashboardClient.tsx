@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { HistoryPanel, Navbar, UploadPanel, showToast } from "@/components";
-import type { UserProfile } from "@/types/freight";
+import type { UserProfile } from "@/types/user";
 import { getSupabaseBrowserClient } from "@/services/supabase/client";
 import { saveUserProfile } from "@/services/account";
 import { useRouter } from "next/navigation";
@@ -32,6 +32,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
     canUpload,
     upload,
     remove,
+    update,
     refresh,
     download,
     downloadAll,
@@ -127,6 +128,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
             documents={documents}
             onRefresh={refresh}
             onDelete={remove}
+            onUpdate={update}
             onDownload={download}
             onDownloadAll={downloadAll}
             defaultExportFormat={userSettings.defaultExportFormat}

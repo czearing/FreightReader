@@ -1,8 +1,5 @@
-import type {
-  ExportFormat,
-  ThemePreference,
-  UserSettings,
-} from "@/types/freight";
+import type { ExportFormat } from "@/types/documents";
+import type { ThemePreference, UserSettings } from "@/types/user";
 
 export interface PreferencesDialogProps {
   isOpen: boolean;

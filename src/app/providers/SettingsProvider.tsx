@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 
 import { showToast } from "@/components";
 import { saveUserSettings } from "@/services/settings";
-import type { UserSettings } from "@/types/freight";
+import type { UserSettings } from "@/types/user";
 
 export const DEFAULT_SETTINGS: UserSettings = {
   theme: "system",

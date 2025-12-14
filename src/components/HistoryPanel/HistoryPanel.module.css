@@ -388,6 +388,13 @@
   white-space: nowrap;
 }
 
+.HistoryPanel_statusStack {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-start;
+}
+
 .HistoryPanel_badgeDone {
   background-color: var(--status-success-bg);
   color: var(--status-success-text);
@@ -409,6 +416,12 @@
   50% {
     opacity: 0.5;
   }
+}
+
+.HistoryPanel_badgeReview {
+  background-color: var(--status-warning-bg);
+  color: var(--status-warning-text);
+  border-color: var(--status-warning-border);
 }
 
 .HistoryPanel_badgeFailed {
@@ -449,6 +462,12 @@
   color: var(--status-success-text);
   background-color: var(--status-success-bg);
 }
+
+.HistoryPanel_actionBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .HistoryPanel_actionBtnDelete:hover {
   color: var(--status-error-text);
   background-color: var(--status-error-bg);
@@ -492,6 +511,19 @@
   font-size: 0.875rem;
   color: var(--text-secondary);
   margin-bottom: 16px;
+}
+
+.HistoryPanel_cardBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: var(--status-warning-text);
+  background-color: var(--status-warning-bg);
+  border: 1px solid var(--status-warning-border);
+  border-radius: 6px;
+  padding: 4px 8px;
+  margin-bottom: 8px;
 }
 
 .HistoryPanel_cardData p {
@@ -546,6 +578,11 @@
 
 .HistoryPanel_cardBtnDownload:hover {
   background-color: var(--brand-icon-bg);
+}
+
+.HistoryPanel_cardBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .HistoryPanel_textRight {

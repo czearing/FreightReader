@@ -1,4 +1,4 @@
-import type { UserProfile, UserSettings, UserStats } from "@/types/freight";
+import type { UserProfile, UserSettings, UserStats } from "@/types/user";
 
 export interface NavbarProps {
   user: UserProfile;

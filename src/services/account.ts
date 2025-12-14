@@ -1,5 +1,5 @@
 import { getSupabaseBrowserClient } from "@/services/supabase/client";
-import type { UserProfile } from "@/types/freight";
+import type { UserProfile } from "@/types/user";
 
 export const saveUserProfile = async (userId: string, profile: UserProfile) => {
   const supabase = getSupabaseBrowserClient();

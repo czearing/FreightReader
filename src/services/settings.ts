@@ -1,5 +1,5 @@
 import { getSupabaseBrowserClient } from "./supabase/client";
-import type { UserSettings } from "@/types/freight";
+import type { UserSettings } from "@/types/user";
 
 export const saveUserSettings = async (
   userId: string,

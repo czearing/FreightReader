@@ -6,7 +6,7 @@ import type {
   UserProfileRecord,
   UserSettings,
   UserSettingsRecord,
-} from "@/types/freight";
+} from "@/types/user";
 import { DashboardClient } from "./DashboardClient";
 import {
   DEFAULT_SETTINGS,
